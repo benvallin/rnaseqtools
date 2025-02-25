@@ -2,7 +2,13 @@ Package: rnaseqtools
 Title: RNA-seq analysis tools
 Version: 0.0.0.9000
 Authors@R: 
-    person("Benjamin", "Vallin", , "ben.vallin@gmail.com", role = c("aut", "cre"))
+    person(
+    given = "Benjamin", 
+    family = "Vallin", 
+    email = "ben.vallin@gmail.com", 
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0009-0008-4907-4330")
+    )
 Description: Helper functions to facilitate RNA-seq analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
