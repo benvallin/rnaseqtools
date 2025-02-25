@@ -1,3 +1,12 @@
+#' Import Salmon's metadata
+#'
+#' @param file A meta_info.json file produced by Salmon software.
+#'
+#' @return A tibble with key metrics extracted from input meta_info.json file.
+#' @export
+#'
+#' @examples
+#' meta_info <- import_salmon_meta_info(file = "path_to_meta_info.json")
 import_salmon_meta_info <- function(file) {
 
   meta_info <- rjson::fromJSON(file = file)
