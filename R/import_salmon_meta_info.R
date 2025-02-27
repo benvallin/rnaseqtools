@@ -6,8 +6,14 @@
 #' @export
 #'
 #' @examples
-#' meta_info <- import_salmon_meta_info(file = "path_to_meta_info.json")
+#' ### Do not run ###
+#' # meta_info <- import_salmon_meta_info(file = "path_to_meta_info.json")
+#'
 import_salmon_meta_info <- function(file) {
+
+  if(!requireNamespace("rjson", quietly = TRUE)) {
+    stop("Package \"rjson\" must be installed to use this function.")
+  }
 
   meta_info <- rjson::fromJSON(file = file)
 
@@ -20,8 +26,8 @@ import_salmon_meta_info <- function(file) {
                            "num_fragments_filtered_vm", "num_alignments_below_threshold_for_mapped_fragments_vm",
                            "percent_mapped")]
 
-  meta_info <- as_tibble(meta_info) %>%
-    mutate(file = file) %>%
-    select(file, everything())
+  meta_info <- dplyr::as_tibble(meta_info) %>%
+    dplyr::mutate(file = file) %>%
+    dplyr::select(file, dplyr::everything())
 
 }

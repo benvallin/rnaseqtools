@@ -16,5 +16,7 @@ A tibble with key metrics extracted from input meta_info.json file.
 Import Salmon's metadata
 }
 \examples{
-meta_info <- import_salmon_meta_info(file = "path_to_meta_info.json")
+### Do not run ###
+# meta_info <- import_salmon_meta_info(file = "path_to_meta_info.json")
+
 }
