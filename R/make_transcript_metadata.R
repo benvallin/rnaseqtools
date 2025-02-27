@@ -11,9 +11,9 @@
 #'
 make_transcript_metadata <- function(input) {
 
-  output <- unique(input[!is.na(input$transcript_id), c("transcript_id", "gene_id")])
+  output <- unique(input[!is.na(input$transcript_id), c("transcript_id", "gene_id", "gene_name")])
 
-  colnames(output) <- c("ensembl_transcript_id_version", "ensembl_gene_id_version")
+  colnames(output) <- c("ensembl_transcript_id_version", "ensembl_gene_id_version", "gene_symbol")
 
   output
 
