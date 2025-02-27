@@ -19,4 +19,5 @@ BugReports: https://github.com/benvallin/rnaseqtools/issues
 Imports: 
     dplyr
 Suggests: 
-    rjson
+    rjson,
+    rtracklayer
