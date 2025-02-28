@@ -26,6 +26,7 @@ Imports:
     tidyselect
 Suggests: 
     fgsea,
+    limma,
     msigdbr,
     rjson,
     rtracklayer
