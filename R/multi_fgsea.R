@@ -29,6 +29,28 @@ multi_fgsea <- function(input,
     stop("Package \"fgsea\" must be installed to use this function.")
   }
 
+  if(!is.numeric(stats) || is.null(names(stats))) {
+    stop("Invalid stats argument.")
+  }
+
+  if(!is.numeric(min_set_size) ||
+     length(min_set_size) != 1L ||
+     min_set_size < 1L) {
+    stop("Invalid min_set_size argument.")
+  }
+
+  if(!is.numeric(max_set_size) ||
+     length(max_set_size) != 1L ||
+     max_set_size <= min_set_size) {
+    stop("Invalid max_set_size argument.")
+  }
+
+  if(!is.numeric(padj_threshold) ||
+     length(padj_threshold) != 1L ||
+     padj_threshold < 0) {
+    stop("Invalid padj_threshold argument.")
+  }
+
   stats <- stats::na.omit(stats)
 
   collections <- make_fgsea_pathways(input = input,
