@@ -15,19 +15,29 @@ import_salmon_meta_info <- function(file) {
     stop("Package \"rjson\" must be installed to use this function.")
   }
 
+  if(!grepl(pattern = "^.*\\.json$", x = file)) {
+    stop("Input file must be in JSON format.")
+  }
+
   output <- rjson::fromJSON(file = file)
 
-  output <- output[c("library_types",
-                     "frag_dist_length", "frag_length_mean", "frag_length_sd",
-                     "seq_bias_correct", "gc_bias_correct", "keep_duplicates",
-                     "num_valid_targets", "num_decoy_targets",
-                     "num_processed", "num_mapped",
-                     "num_decoy_fragments", "num_dovetail_fragments",
-                     "num_fragments_filtered_vm", "num_alignments_below_threshold_for_mapped_fragments_vm",
-                     "percent_mapped")]
+  keep <- c("library_types",
+            "frag_dist_length", "frag_length_mean", "frag_length_sd",
+            "seq_bias_correct", "gc_bias_correct", "keep_duplicates",
+            "num_valid_targets", "num_decoy_targets",
+            "num_processed", "num_mapped",
+            "num_decoy_fragments", "num_dovetail_fragments",
+            "num_fragments_filtered_vm", "num_alignments_below_threshold_for_mapped_fragments_vm",
+            "percent_mapped")
 
-  dplyr::as_tibble(output) %>%
-    dplyr::mutate(file = file) %>%
-    dplyr::select(file, dplyr::everything())
+  if(!all(keep %in% names(output))) {
+    stop("Missing Salmon's metrics in input file.")
+  }
+
+  output <- tibble::as_tibble(output[keep])
+
+  output$file <- file
+
+  output[, c(file, keep)]
 
 }

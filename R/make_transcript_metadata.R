@@ -11,7 +11,13 @@
 #'
 make_transcript_metadata <- function(input) {
 
-  output <- unique(input[!is.na(input$transcript_id), c("transcript_id", "gene_id", "gene_name")])
+  keep <- c("transcript_id", "gene_id", "gene_name")
+
+  if(!tibble::is_tibble(input) || !all(keep %in% colnames(input))) {
+    stop("Input must be a tibble with columns \"transcript_id\", \"gene_id\" and \"gene_name\".")
+  }
+
+  output <- unique(input[!is.na(input$transcript_id), keep])
 
   colnames(output) <- c("ensembl_transcript_id_version", "ensembl_gene_id_version", "gene_symbol")
 

@@ -15,9 +15,13 @@ import_gencode_annotation <- function(file) {
     stop("Package \"rtracklayer\" must be installed to use this function.")
   }
 
+  if(!grepl(pattern = "^.*\\.gtf$", x = file)) {
+    stop("Input file must be in GTF format.")
+  }
+
   output <- rtracklayer::import(file)
 
-  dplyr::as_tibble(output)
+  tibble::as_tibble(output)
 
 }
 
