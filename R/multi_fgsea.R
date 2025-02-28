@@ -1,4 +1,4 @@
-#' Run fgsea on multiple collections
+#' Run fgsea::fgsea on multiple collections
 #'
 #' @param input tibble with gene_id column and collections list-columns.
 #' @param collections character vector of gene collection names; all elements must be column names of input.
@@ -9,12 +9,15 @@
 #' @param padj_threshold padj threshold. All gene sets with padj equal or above the threshold are filtered out.
 #' @param ... optional arguments passed to fgsea::fgsea.
 #'
-#' @return a tibble with results of fgsea runs on multiple collections.
+#' @return a tibble with results of fgsea::fgsea runs on multiple collections.
 #' @export
 #'
 #' @examples
 #' ### Do not run ###
-#' # fgsea_results <- multi_fgsea(input = gene_metadata, collections = collection_names, stats = stats)
+#' # fgsea_results <- multi_fgsea(input = msigdb_collection_table,
+#' #                              collections = collection_names,
+#' #                              stats = stats,
+#' #                              gene_id = "ensembl_gene_id")
 #'
 multi_fgsea <- function(input,
                         collections,

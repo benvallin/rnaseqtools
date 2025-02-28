@@ -1,17 +1,17 @@
 #' Get MSigBD collections
 #'
 #' @param species character vector of length 1 representing species; must be a species_name returned by msigdbr::msigdbr_species.
-#' @param collection_table tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.
+#' @param msigdb_collection_summary tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.
 #'
 #' @return a tibble with ensembl_gene_id column and collections list-columns.
 #' @export
 #'
 #' @examples
 #' ### Do not run ###
-#' # collections = get_msigdb_collections()
+#' # msigdb_collection_table = get_msigdb_collections()
 #'
 get_msigdb_collections <- function(species = "Homo sapiens",
-                                   collection_table = list_msigdb_collections()) {
+                                   msigdb_collection_summary = list_msigdb_collections()) {
 
   if(!requireNamespace("msigdbr", quietly = TRUE)) {
     stop("Package \"msigdbr\" must be installed to use this function.")
@@ -26,12 +26,12 @@ get_msigdb_collections <- function(species = "Homo sapiens",
     stop("Invalid species argument.")
   }
 
-  if(!tibble::is_tibble(collection_table) ||
-     !all(c("collection_name", "gs_cat", "gs_subcat") %in% colnames(collection_table))) {
-    stop("Invalid collection_table argument.")
+  if(!tibble::is_tibble(msigdb_collection_summary) ||
+     !all(c("collection_name", "gs_cat", "gs_subcat") %in% colnames(msigdb_collection_summary))) {
+    stop("Invalid msigdb_collection_summary argument.")
   }
 
-  collections <- apply(X = collection_table,
+  collections <- apply(X = msigdb_collection_summary,
                        MARGIN = 1,
                        FUN = function(x) { as.list(x) },
                        simplify = F)

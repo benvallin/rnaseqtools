@@ -1,11 +1,11 @@
 #' List MSigBD collections
 #'
-#' @return a tibble with columns collection_name, gs_cat and gs_subcat.
+#' @return a tibble summarizing available MSigDB collections with columns collection_name, gs_cat and gs_subcat.
 #' @export
 #'
 #' @examples
 #' ### Do not run ###
-#' # collection_table = list_msigdb_collections()
+#' # msigdb_collection_summary = list_msigdb_collections()
 #'
 list_msigdb_collections <- function() {
 

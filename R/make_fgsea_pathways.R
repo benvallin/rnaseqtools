@@ -9,7 +9,9 @@
 #'
 #' @examples
 #' ### Do not run ###
-#' # collections <- make_fgsea_pathways(input = gene_metadata, collections = collection_names)
+#' # collections <- make_fgsea_pathways(input = msigdb_collection_table,
+#' #                                    collections = collection_names,
+#' #                                    gene_id = "ensembl_gene_id")
 #'
 make_fgsea_pathways <- function(input,
                                 collections,

@@ -6,13 +6,13 @@
 \usage{
 get_msigdb_collections(
   species = "Homo sapiens",
-  collection_table = list_msigdb_collections()
+  msigdb_collection_summary = list_msigdb_collections()
 )
 }
 \arguments{
 \item{species}{character vector of length 1 representing species; must be a species_name returned by msigdbr::msigdbr_species.}
 
-\item{collection_table}{tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.}
+\item{msigdb_collection_summary}{tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.}
 }
 \value{
 a tibble with ensembl_gene_id column and collections list-columns.
@@ -22,6 +22,6 @@ Get MSigBD collections
 }
 \examples{
 ### Do not run ###
-# collections = get_msigdb_collections()
+# msigdb_collection_table = get_msigdb_collections()
 
 }

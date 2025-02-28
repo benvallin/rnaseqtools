@@ -7,13 +7,13 @@
 list_msigdb_collections()
 }
 \value{
-a tibble with columns collection_name, gs_cat and gs_subcat.
+a tibble summarizing available MSigDB collections with columns collection_name, gs_cat and gs_subcat.
 }
 \description{
 List MSigBD collections
 }
 \examples{
 ### Do not run ###
-# collection_table = list_msigdb_collections()
+# msigdb_collection_summary = list_msigdb_collections()
 
 }
