@@ -1,15 +1,19 @@
 #' Convert gene identifiers to indices for gene sets - multiple collections
 #'
 #' @param input tibble with gene_id column and collections list-columns.
-#' @param collections character vector of gene collection names; all elements must be column names of input.
+#' @param collections character vector of gene collection names. All elements must be column names of input.
 #' @param identifiers character vector of gene identifiers.
-#' @param gene_id character vector of length 1 representing gene ID; must be a column name of input.
+#' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
 #'
-#' @return a list.
+#' @return a list of collection-specific sublists containing gene set-specific integer vectors of gene indices in the vector identifiers.
 #' @export
 #'
 #' @examples
-#' # example
+#' ### Do not run ###
+#' # collections <- batch_ids2indices(input = msigdb_collection_table,
+#' #                                  collections = collection_names,
+#' #                                  identifiers = msigdb_collection_table$ensembl_gene_id,
+#' #                                  gene_id = "ensembl_gene_id")
 #'
 batch_ids2indices <- function(input,
                               collections,
@@ -46,10 +50,15 @@ batch_ids2indices <- function(input,
   n_identifiers <- length(identifiers)
   n_genes <- length(unique(input[[gene_id]]))
   n_identifiers_in_genes <- sum(identifiers %in% unique(input[[gene_id]]))
-  pct_identifiers_in_genes <- round(n_identifiers_in_genes / n_genes * 100, 2)
 
-  message(n_identifiers_in_genes, " / ", n_identifiers, " (", pct_identifiers_in_genes,
-          ") identifiers found in column ", gene_id, " of input.")
+  if(n_identifiers_in_genes < n_identifiers) {
+
+    warning("Only ", n_identifiers_in_genes, " / ", n_identifiers,
+            " (", round(n_identifiers_in_genes / n_genes * 100, 3), "%) identifiers found in column ", gene_id, " of input.",
+            "\nCheck that identifiers and gene_id refer to the same thing!",
+            call. = F, immediate. = T)
+
+  }
 
   output <- lapply(X = collections,
                    FUN = function(x) {

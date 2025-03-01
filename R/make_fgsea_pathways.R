@@ -1,8 +1,8 @@
 #' Make fgsea pathways
 #'
 #' @param input tibble with gene_id column and collections list-columns.
-#' @param collections character vector of gene collection names; all elements must be column names of input.
-#' @param gene_id character vector of length 1 representing gene ID; must be a column name of input.
+#' @param collections character vector of gene collection names. All elements must be column names of input.
+#' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
 #'
 #' @return a list of collection-specific sublists containing gene set-specific character vectors of gene IDs.
 #' @export

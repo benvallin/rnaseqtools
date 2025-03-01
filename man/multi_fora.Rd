@@ -19,13 +19,13 @@ multi_fora(
 \arguments{
 \item{input}{tibble with gene_id column and collections list-columns.}
 
-\item{collections}{character vector of gene collection names; all elements must be column names of input.}
+\item{collections}{character vector of gene collection names. All elements must be column names of input.}
 
 \item{genes}{set of query genes.}
 
 \item{universe}{a universe from which genes were selected.}
 
-\item{gene_id}{character vector of length 1 representing gene ID; must be a column name of input.}
+\item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
 
 \item{min_set_size}{minimal size of a gene set to test. All gene sets below the threshold are excluded.}
 

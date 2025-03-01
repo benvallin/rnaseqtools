@@ -1,6 +1,6 @@
 #' Get MSigBD collections
 #'
-#' @param species character vector of length 1 representing species; must be a species_name returned by msigdbr::msigdbr_species.
+#' @param species character vector of length 1 representing species. Must be a species_name returned by msigdbr::msigdbr_species.
 #' @param msigdb_collection_summary tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.
 #'
 #' @return a tibble with ensembl_gene_id column and collections list-columns.

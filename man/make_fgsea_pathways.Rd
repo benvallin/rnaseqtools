@@ -9,9 +9,9 @@ make_fgsea_pathways(input, collections, gene_id = "ensembl_gene_id_version")
 \arguments{
 \item{input}{tibble with gene_id column and collections list-columns.}
 
-\item{collections}{character vector of gene collection names; all elements must be column names of input.}
+\item{collections}{character vector of gene collection names. All elements must be column names of input.}
 
-\item{gene_id}{character vector of length 1 representing gene ID; must be a column name of input.}
+\item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
 }
 \value{
 a list of collection-specific sublists containing gene set-specific character vectors of gene IDs.

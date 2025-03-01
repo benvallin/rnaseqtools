@@ -10,7 +10,7 @@ get_msigdb_collections(
 )
 }
 \arguments{
-\item{species}{character vector of length 1 representing species; must be a species_name returned by msigdbr::msigdbr_species.}
+\item{species}{character vector of length 1 representing species. Must be a species_name returned by msigdbr::msigdbr_species.}
 
 \item{msigdb_collection_summary}{tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.}
 }

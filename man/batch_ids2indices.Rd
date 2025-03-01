@@ -14,19 +14,23 @@ batch_ids2indices(
 \arguments{
 \item{input}{tibble with gene_id column and collections list-columns.}
 
-\item{collections}{character vector of gene collection names; all elements must be column names of input.}
+\item{collections}{character vector of gene collection names. All elements must be column names of input.}
 
 \item{identifiers}{character vector of gene identifiers.}
 
-\item{gene_id}{character vector of length 1 representing gene ID; must be a column name of input.}
+\item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
 }
 \value{
-a list.
+a list of collection-specific sublists containing gene set-specific integer vectors of gene indices in the vector identifiers.
 }
 \description{
 Convert gene identifiers to indices for gene sets - multiple collections
 }
 \examples{
-# example
+### Do not run ###
+# collections <- batch_ids2indices(input = msigdb_collection_table,
+#                                  collections = collection_names,
+#                                  identifiers = msigdb_collection_table$ensembl_gene_id,
+#                                  gene_id = "ensembl_gene_id")
 
 }

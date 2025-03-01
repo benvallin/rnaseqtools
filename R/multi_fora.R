@@ -1,10 +1,10 @@
 #' Run fgsea::fora on multiple collections
 #'
 #' @param input tibble with gene_id column and collections list-columns.
-#' @param collections character vector of gene collection names; all elements must be column names of input.
+#' @param collections character vector of gene collection names. All elements must be column names of input.
 #' @param genes set of query genes.
 #' @param universe a universe from which genes were selected.
-#' @param gene_id character vector of length 1 representing gene ID; must be a column name of input.
+#' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
 #' @param min_set_size minimal size of a gene set to test. All gene sets below the threshold are excluded.
 #' @param max_set_size maximal size of a gene set to test. All gene sets above the threshold are excluded.
 #' @param padj_threshold padj threshold. All gene sets with padj equal or above the threshold are filtered out.
