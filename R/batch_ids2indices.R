@@ -48,14 +48,13 @@ batch_ids2indices <- function(input,
   identifiers <- unique(identifiers)
 
   n_identifiers <- length(identifiers)
-  n_genes <- length(unique(input[[gene_id]]))
   n_identifiers_in_genes <- sum(identifiers %in% unique(input[[gene_id]]))
 
   if(n_identifiers_in_genes < n_identifiers) {
 
-    warning("Only ", n_identifiers_in_genes, " / ", n_identifiers,
-            " (", round(n_identifiers_in_genes / n_genes * 100, 3), "%) identifiers found in column ", gene_id, " of input.",
-            "\nCheck that identifiers and gene_id refer to the same thing!",
+    warning("Only ", n_identifiers_in_genes, " / ", n_identifiers, " (",
+            round(n_identifiers_in_genes / n_identifiers * 100, 3), "%) identifiers found in column ",
+            gene_id, " of input.\nCheck that identifiers and gene_id refer to the same thing!",
             call. = F, immediate. = T)
 
   }
