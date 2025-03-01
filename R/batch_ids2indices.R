@@ -31,11 +31,25 @@ batch_ids2indices <- function(input,
     stop("Invalid collections argument.")
   }
 
+  if(!is.character(identifiers)) {
+    stop("Invalid identifiers argument.")
+  }
+
   if(!is.character(gene_id) ||
      length(gene_id) != 1L ||
      !gene_id %in% colnames(input)) {
     stop("Invalid gene_id argument.")
   }
+
+  identifiers <- unique(identifiers)
+
+  n_identifiers <- length(identifiers)
+  n_genes <- length(unique(input[[gene_id]]))
+  n_identifiers_in_genes <- sum(identifiers %in% unique(input[[gene_id]]))
+  pct_identifiers_in_genes <- round(n_identifiers_in_genes / n_genes * 100, 2)
+
+  message(n_identifiers_in_genes, " / ", n_identifiers, " (", pct_identifiers_in_genes,
+          ") identifiers found in column ", gene_id, " of input.")
 
   output <- lapply(X = collections,
                    FUN = function(x) {
