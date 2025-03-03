@@ -12,11 +12,13 @@
 import_salmon_meta_info <- function(file) {
 
   if(!requireNamespace("rjson", quietly = TRUE)) {
-    stop("Package \"rjson\" must be installed to use this function.")
+    stop("Package \"rjson\" must be installed to use this function.",
+         call. = F)
   }
 
   if(!grepl(pattern = "^.*\\.json$", x = file)) {
-    stop("Input file must be in JSON format.")
+    stop("Input file must be in JSON format.",
+         call. = F)
   }
 
   output <- rjson::fromJSON(file = file)
@@ -31,7 +33,8 @@ import_salmon_meta_info <- function(file) {
             "percent_mapped")
 
   if(!all(keep %in% names(output))) {
-    stop("Missing Salmon's metrics in input file.")
+    stop("Missing Salmon's metrics in input file.",
+         call. = F)
   }
 
   output <- tibble::as_tibble(output[keep])

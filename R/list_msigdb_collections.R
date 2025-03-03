@@ -4,13 +4,13 @@
 #' @export
 #'
 #' @examples
-#' ### Do not run ###
-#' # msigdb_collection_summary = list_msigdb_collections()
+#' msigdb_collection_summary = list_msigdb_collections()
 #'
 list_msigdb_collections <- function() {
 
   if(!requireNamespace("msigdbr", quietly = TRUE)) {
-    stop("Package \"msigdbr\" must be installed to use this function.")
+    stop("Package \"msigdbr\" must be installed to use this function.",
+         call. = F)
   }
 
   output <- msigdbr::msigdbr_collections()

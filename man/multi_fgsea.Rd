@@ -16,7 +16,7 @@ multi_fgsea(
 )
 }
 \arguments{
-\item{input}{tibble with gene_id column and collections list-columns.}
+\item{input}{data.frame or tibble with gene_id column and collections list-columns.}
 
 \item{collections}{character vector of gene collection names. All elements must be column names of input.}
 

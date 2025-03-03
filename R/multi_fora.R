@@ -1,6 +1,6 @@
 #' Run fgsea::fora on multiple collections
 #'
-#' @param input tibble with gene_id column and collections list-columns.
+#' @param input data.frame or tibble with gene_id column and collections list-columns.
 #' @param collections character vector of gene collection names. All elements must be column names of input.
 #' @param genes set of query genes.
 #' @param universe a universe from which genes were selected.
@@ -32,21 +32,25 @@ multi_fora <- function(input,
                        ...) {
 
   if(!requireNamespace("fgsea", quietly = TRUE)) {
-    stop("Package \"fgsea\" must be installed to use this function.")
+    stop("Package \"fgsea\" must be installed to use this function.",
+         call. = F)
   }
 
   if(!is.character(genes)) {
-    stop("Invalid genes argument.")
+    stop("Invalid genes argument.",
+         call. = F)
   }
 
   if(!is.character(universe)) {
-    stop("Invalid universe argument.")
+    stop("Invalid universe argument.",
+         call. = F)
   }
 
   if(!is.numeric(min_set_size) ||
      length(min_set_size) != 1L ||
      min_set_size < 1L) {
-    stop("Invalid min_set_size argument.")
+    stop("Invalid min_set_size argument.",
+         call. = F)
   }
 
   if(!is.null(max_set_size)) {
@@ -54,7 +58,8 @@ multi_fora <- function(input,
     if(!is.numeric(max_set_size) ||
        length(max_set_size) != 1L ||
        max_set_size <= min_set_size) {
-      stop("Invalid max_set_size argument.")
+      stop("Invalid max_set_size argument.",
+           call. = F)
     }
 
   }
@@ -62,7 +67,8 @@ multi_fora <- function(input,
   if(!is.numeric(padj_threshold) ||
      length(padj_threshold) != 1L ||
      padj_threshold < 0) {
-    stop("Invalid padj_threshold argument.")
+    stop("Invalid padj_threshold argument.",
+         call. = F)
   }
 
   collections <- make_fgsea_pathways(input = input,

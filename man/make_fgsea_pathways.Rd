@@ -7,7 +7,7 @@
 make_fgsea_pathways(input, collections, gene_id = "ensembl_gene_id_version")
 }
 \arguments{
-\item{input}{tibble with gene_id column and collections list-columns.}
+\item{input}{data.frame or tibble with gene_id column and collections list-columns. Each collection must contain column set_name.}
 
 \item{collections}{character vector of gene collection names. All elements must be column names of input.}
 

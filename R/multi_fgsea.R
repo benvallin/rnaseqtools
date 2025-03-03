@@ -1,6 +1,6 @@
 #' Run fgsea::fgsea on multiple collections
 #'
-#' @param input tibble with gene_id column and collections list-columns.
+#' @param input data.frame or tibble with gene_id column and collections list-columns.
 #' @param collections character vector of gene collection names. All elements must be column names of input.
 #' @param stats named vector of gene-level stats. Names should be the same as in gene_id.
 #' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
@@ -29,29 +29,34 @@ multi_fgsea <- function(input,
                         ...) {
 
   if(!requireNamespace("fgsea", quietly = TRUE)) {
-    stop("Package \"fgsea\" must be installed to use this function.")
+    stop("Package \"fgsea\" must be installed to use this function.",
+         call. = F)
   }
 
   if(!is.numeric(stats) || is.null(names(stats))) {
-    stop("Invalid stats argument.")
+    stop("Invalid stats argument.",
+         call. = F)
   }
 
   if(!is.numeric(min_set_size) ||
      length(min_set_size) != 1L ||
      min_set_size < 1L) {
-    stop("Invalid min_set_size argument.")
+    stop("Invalid min_set_size argument.",
+         call. = F)
   }
 
   if(!is.numeric(max_set_size) ||
      length(max_set_size) != 1L ||
      max_set_size <= min_set_size) {
-    stop("Invalid max_set_size argument.")
+    stop("Invalid max_set_size argument.",
+         call. = F)
   }
 
   if(!is.numeric(padj_threshold) ||
      length(padj_threshold) != 1L ||
      padj_threshold < 0) {
-    stop("Invalid padj_threshold argument.")
+    stop("Invalid padj_threshold argument.",
+         call. = F)
   }
 
   stats <- stats::na.omit(stats)

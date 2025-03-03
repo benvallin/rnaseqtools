@@ -1,6 +1,6 @@
 #' Convert gene identifiers to indices for gene sets - multiple collections
 #'
-#' @param input tibble with gene_id column and collections list-columns.
+#' @param input data.frame or tibble with gene_id column and collections list-columns.
 #' @param collections character vector of gene collection names. All elements must be column names of input.
 #' @param identifiers character vector of gene identifiers.
 #' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
@@ -21,28 +21,33 @@ batch_ids2indices <- function(input,
                               gene_id = "ensembl_gene_id_version") {
 
   if(!requireNamespace("limma", quietly = TRUE)) {
-    stop("Package \"limma\" must be installed to use this function.")
+    stop("Package \"limma\" must be installed to use this function.",
+         call. = F)
   }
 
-  if(!tibble::is_tibble(input)) {
-    stop("Invalid input argument.")
+  if(!is.data.frame(input)) {
+    stop("Input must be a data.frame or tibble.",
+         call. = F)
   }
 
   if(!is.character(collections) ||
      !all(collections %in% colnames(input)) ||
      !all(unlist(lapply(X = collections,
                         FUN = function(x) { class(input[[x]]) == "list" })))) {
-    stop("Invalid collections argument.")
+    stop("Invalid collections argument.",
+         call. = F)
   }
 
   if(!is.character(identifiers)) {
-    stop("Invalid identifiers argument.")
+    stop("Invalid identifiers argument.",
+         call. = F)
   }
 
   if(!is.character(gene_id) ||
      length(gene_id) != 1L ||
      !gene_id %in% colnames(input)) {
-    stop("Invalid gene_id argument.")
+    stop("Invalid gene_id argument.",
+         call. = F)
   }
 
   identifiers <- unique(identifiers)

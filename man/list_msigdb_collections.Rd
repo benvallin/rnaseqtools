@@ -13,7 +13,6 @@ a tibble summarizing available MSigDB collections with columns collection_name, 
 List MSigBD collections
 }
 \examples{
-### Do not run ###
-# msigdb_collection_summary = list_msigdb_collections()
+msigdb_collection_summary = list_msigdb_collections()
 
 }

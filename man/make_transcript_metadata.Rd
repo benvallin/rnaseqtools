@@ -7,7 +7,7 @@
 make_transcript_metadata(input)
 }
 \arguments{
-\item{input}{A GENCODE annotation tibble produced by import_gencode_annotation.}
+\item{input}{A GENCODE annotation data.frame or tibble as produced by import_gencode_annotation.}
 }
 \value{
 A tibble with transcript metadata.

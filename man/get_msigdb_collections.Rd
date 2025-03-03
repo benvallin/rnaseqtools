@@ -12,16 +12,15 @@ get_msigdb_collections(
 \arguments{
 \item{species}{character vector of length 1 representing species. Must be a species_name returned by msigdbr::msigdbr_species.}
 
-\item{msigdb_collection_summary}{tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.}
+\item{msigdb_collection_summary}{data.frame or tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.}
 }
 \value{
-a tibble with ensembl_gene_id column and collections list-columns.
+a tibble with ensembl_gene_id column and collections list-columns. Each collection contains columns set_id and set_name.
 }
 \description{
 Get MSigBD collections
 }
 \examples{
-### Do not run ###
-# msigdb_collection_table = get_msigdb_collections()
+msigdb_collection_table = get_msigdb_collections()
 
 }
