@@ -8,14 +8,20 @@
 #' @export
 #'
 #' @examples
-#' ### Do not run ###
-#' # collections <- make_fgsea_pathways(input = msigdb_collection_table,
-#' #                                    collections = collection_names,
-#' #                                    gene_id = "ensembl_gene_id")
+#' # Make MSigDB collection table
+#' msigdb_collection_table = get_msigdb_collections()
+#'
+#' # Define collections of interest
+#' collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+#'
+#' # Make fgsea pathways
+#' collections <- make_fgsea_pathways(input = msigdb_collection_table,
+#'                                    collections = collection_names,
+#'                                    gene_id = "ensembl_gene_id")
 #'
 make_fgsea_pathways <- function(input,
                                 collections,
-                                gene_id = "ensembl_gene_id_version") {
+                                gene_id = "ensembl_gene_id") {
 
   if(!is.data.frame(input)) {
     stop("Input must be a data.frame or tibble.",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_msigdb_collections.R
 \name{get_msigdb_collections}
 \alias{get_msigdb_collections}
-\title{Get MSigBD collections}
+\title{Get MSigDB collections}
 \usage{
 get_msigdb_collections(
   species = "Homo sapiens",
@@ -18,7 +18,7 @@ get_msigdb_collections(
 a tibble with ensembl_gene_id column and collections list-columns. Each collection contains columns set_id and set_name.
 }
 \description{
-Get MSigBD collections
+Get MSigDB collections
 }
 \examples{
 msigdb_collection_table = get_msigdb_collections()

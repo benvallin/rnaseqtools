@@ -42,11 +42,28 @@ a tibble with results of fgsea::fora runs on multiple collections.
 Run fgsea::fora on multiple collections
 }
 \examples{
-### Do not run ###
-# fora_results <- multi_ora(input = msigdb_collection_table,
-#                           collections = collection_names,
-#                           genes = genes,
-#                           universe = universe,
-#                           gene_id = "ensembl_gene_id")
+# Make MSigDB collection table
+msigdb_collection_table = get_msigdb_collections()
+
+# Define collections of interest
+collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+
+# Extract genes significantly downregulated (log2fc < 0 and padj < 0.05) from MAST results
+genes <- mast_results \%>\%
+  dplyr::filter(log2fc < 0,
+                padj < 0.05) \%>\%
+  dplyr::pull(ensembl_gene_id)
+
+# Extract corresponding universe from MAST results
+universe <- mast_results \%>\%
+  dplyr::filter(!is.na(log2fc)) \%>\%
+  dplyr::pull(ensembl_gene_id)
+
+# Run fgsea::fora on selected collections
+fora_results <- multi_fora(input = msigdb_collection_table,
+                           collections = collection_names,
+                           genes = genes,
+                           universe = universe,
+                           gene_id = "ensembl_gene_id")
 
 }

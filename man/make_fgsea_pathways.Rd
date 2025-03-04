@@ -4,7 +4,7 @@
 \alias{make_fgsea_pathways}
 \title{Make fgsea pathways}
 \usage{
-make_fgsea_pathways(input, collections, gene_id = "ensembl_gene_id_version")
+make_fgsea_pathways(input, collections, gene_id = "ensembl_gene_id")
 }
 \arguments{
 \item{input}{data.frame or tibble with gene_id column and collections list-columns. Each collection must contain column set_name.}
@@ -20,9 +20,15 @@ a list of collection-specific sublists containing gene set-specific character ve
 Make fgsea pathways
 }
 \examples{
-### Do not run ###
-# collections <- make_fgsea_pathways(input = msigdb_collection_table,
-#                                    collections = collection_names,
-#                                    gene_id = "ensembl_gene_id")
+# Make MSigDB collection table
+msigdb_collection_table = get_msigdb_collections()
+
+# Define collections of interest
+collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+
+# Make fgsea pathways
+collections <- make_fgsea_pathways(input = msigdb_collection_table,
+                                   collections = collection_names,
+                                   gene_id = "ensembl_gene_id")
 
 }

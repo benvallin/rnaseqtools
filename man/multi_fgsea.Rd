@@ -8,7 +8,7 @@ multi_fgsea(
   input,
   collections,
   stats,
-  gene_id = "ensembl_gene_id_version",
+  gene_id = "ensembl_gene_id",
   min_set_size = 1,
   max_set_size = length(stats) - 1,
   padj_threshold = Inf,
@@ -39,10 +39,21 @@ a tibble with results of fgsea::fgsea runs on multiple collections.
 Run fgsea::fgsea on multiple collections
 }
 \examples{
-### Do not run ###
-# fgsea_results <- multi_fgsea(input = msigdb_collection_table,
-#                              collections = collection_names,
-#                              stats = stats,
-#                              gene_id = "ensembl_gene_id")
+# Make MSigDB collection table
+msigdb_collection_table = get_msigdb_collections()
+
+# Define collections of interest
+collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+
+# Extract gene ranking metric from DESeq2 results
+stats <- deseq2_results \%>\%
+  dplyr::arrange(dplyr::desc(sign_log2fc_times_minus_log10pvalue)) \%>\%
+  dplyr::pull(sign_log2fc_times_minus_log10pvalue, ensembl_gene_id)
+
+# Run fgsea::fgsea on selected collections
+fgsea_results <- multi_fgsea(input = msigdb_collection_table,
+                             collections = collection_names,
+                             stats = stats,
+                             gene_id = "ensembl_gene_id")
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/list_msigdb_collections.R
 \name{list_msigdb_collections}
 \alias{list_msigdb_collections}
-\title{List MSigBD collections}
+\title{List MSigDB collections}
 \usage{
 list_msigdb_collections()
 }
@@ -10,7 +10,7 @@ list_msigdb_collections()
 a tibble summarizing available MSigDB collections with columns collection_name, gs_cat and gs_subcat.
 }
 \description{
-List MSigBD collections
+List MSigDB collections
 }
 \examples{
 msigdb_collection_summary = list_msigdb_collections()

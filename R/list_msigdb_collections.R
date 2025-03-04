@@ -1,4 +1,4 @@
-#' List MSigBD collections
+#' List MSigDB collections
 #'
 #' @return a tibble summarizing available MSigDB collections with columns collection_name, gs_cat and gs_subcat.
 #' @export
@@ -21,8 +21,9 @@ list_msigdb_collections <- function() {
                              NA_character_,
                              output$gs_subcat)
 
-  output$collection_name <- paste0("MSigDB_",
-                                   output$gs_cat, "_", output$gs_subcat)
+  output$collection_name <- ifelse(is.na(output$gs_subcat),
+                                   paste0("MSigDB_", output$gs_cat),
+                                   paste0("MSigDB_", output$gs_cat, "_", output$gs_subcat))
 
   output[, c("collection_name", "gs_cat", "gs_subcat")]
 
