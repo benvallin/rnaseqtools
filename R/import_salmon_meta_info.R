@@ -7,9 +7,7 @@
 #'
 #' @examples
 #' # Import Salmon's run metadata
-#' file_path <- rnaseqtools_example(file = "meta_info.json")
-#'
-#' meta_info <- import_salmon_meta_info(file = file_path)
+#' meta_info <- import_salmon_meta_info(file = rnaseqtools_example(file = "meta_info.json"))
 #'
 import_salmon_meta_info <- function(file) {
 
