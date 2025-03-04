@@ -41,6 +41,6 @@ import_salmon_meta_info <- function(file) {
 
   output$file <- file
 
-  output[, c(file, keep)]
+  output[, c("file", keep)]
 
 }
