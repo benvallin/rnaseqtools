@@ -25,17 +25,19 @@ Download GENCODE annotation
 }
 \examples{
 # Download GENCODE annotation file
-out_dir_path <- tools::R_user_dir(package = "rnaseqtools", which = "data")
+persistent_data_dir_path <- tools::R_user_dir(package = "rnaseqtools", which = "data")
 
 download_gencode_annotation(species = "human",
                             release = 46,
-                            out_dir_path = out_dir_path)
+                            out_dir_path = persistent_data_dir_path)
 
 # Clean up
-gencode_file_path <- paste0(out_dir_path, "/gencode.v46.primary_assembly.annotation.gtf.gz")
+gencode_file_path <- paste0(persistent_data_dir_path,
+                            "/",
+                            "gencode.v46.primary_assembly.annotation.gtf.gz")
 
 file.remove(gencode_file_path)
 
-rm(out_dir_path, gencode_file_path)
+rm(persistent_data_dir_path, gencode_file_path)
 
 }

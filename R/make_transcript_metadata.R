@@ -6,8 +6,27 @@
 #' @export
 #'
 #' @examples
-#' ### Do not run ###
-#' # transcript_metadata <- make_transcript_metadata(input = gencode_annotation)
+#' # Download GENCODE annotation file
+#' persistent_data_dir_path <- tools::R_user_dir(package = "rnaseqtools", which = "data")
+#'
+#' download_gencode_annotation(species = "human",
+#'                             release = 46,
+#'                             out_dir_path = persistent_data_dir_path)
+#'
+#' # Import GENCODE annotation from downloaded file
+#' gencode_file_path <- paste0(persistent_data_dir_path,
+#'                             "/",
+#'                             "gencode.v46.primary_assembly.annotation.gtf.gz")
+#'
+#' gencode_annotation <- import_gencode_annotation(file = gencode_file_path)
+#'
+#' # Make transcript metadata from GENCODE annotation
+#' transcript_metadata <- make_transcript_metadata(input = gencode_annotation)
+#'
+#' # Clean up
+#' file.remove(gencode_file_path)
+#'
+#' rm(persistent_data_dir_path, gencode_file_path, gencode_annotation)
 #'
 make_transcript_metadata <- function(input) {
 
