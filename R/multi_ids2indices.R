@@ -9,13 +9,22 @@
 #' @export
 #'
 #' @examples
-#' ### Do not run ###
-#' # collections <- batch_ids2indices(input = msigdb_collection_table,
-#' #                                  collections = collection_names,
-#' #                                  identifiers = msigdb_collection_table$ensembl_gene_id,
-#' #                                  gene_id = "ensembl_gene_id")
+#' # Make MSigDB collection table
+#' msigdb_collection_table = get_msigdb_collections()
 #'
-batch_ids2indices <- function(input,
+#' # Define collections of interest
+#' collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+#'
+#' # Extract gene identifiers from log2 COUNT+1 matrix
+#' identifiers <- rownames(log2_tpm1p)
+#'
+#' # Get lists of indices for selected collections
+#' collections <- multi_ids2indices(input = msigdb_collection_table,
+#'                                  collections = collection_names,
+#'                                  identifiers = identifiers,
+#'                                  gene_id = "ensembl_gene_id")
+#'
+multi_ids2indices <- function(input,
                               collections,
                               identifiers,
                               gene_id = "ensembl_gene_id_version") {

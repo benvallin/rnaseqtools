@@ -5,7 +5,7 @@
 \alias{deseq2_results}
 \title{DESeq2 results}
 \format{
-A tibble with 8524 rows and 10 variables:
+A tibble with 1000 rows and 10 variables:
 \describe{
 \item{ensembl_gene_id_version}{ensembl gene ID with version number (e.g.: ENSG00000145335.17)}
 \item{ensembl_gene_id}{ensembl gene ID (e.g.: ENSG00000145335)}
