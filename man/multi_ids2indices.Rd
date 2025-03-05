@@ -4,12 +4,7 @@
 \alias{multi_ids2indices}
 \title{Convert gene identifiers to indices for gene sets - multiple collections}
 \usage{
-multi_ids2indices(
-  input,
-  collections,
-  identifiers,
-  gene_id = "ensembl_gene_id_version"
-)
+multi_ids2indices(input, collections, identifiers, gene_id = "ensembl_gene_id")
 }
 \arguments{
 \item{input}{data.frame or tibble with gene_id column and collections list-columns.}

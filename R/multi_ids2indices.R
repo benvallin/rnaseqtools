@@ -27,7 +27,7 @@
 multi_ids2indices <- function(input,
                               collections,
                               identifiers,
-                              gene_id = "ensembl_gene_id_version") {
+                              gene_id = "ensembl_gene_id") {
 
   if(!requireNamespace("limma", quietly = TRUE)) {
     stop("Package \"limma\" must be installed to use this function.",
