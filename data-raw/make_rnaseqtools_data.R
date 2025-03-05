@@ -20,6 +20,9 @@ mast_res_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/d
 # Path to log2 COUNT+1 matrix file (csv)
 log2_tpm1p_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2.csv"
 
+# Path to sample metadata file (rds)
+sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/cell_clustering/tidy_sample_metadata_filtered_cells/sample_metadata.rds"
+
 # Set up ------------------------------------------------------------------
 
 # Append trailing "/" to directory paths if missing
@@ -70,6 +73,7 @@ file.copy(from = salmon_meta_info_path,
 
 # DGE-related datasets ----------------------------------------------------
 
+# log2(TPM+1) matrix
 log2_tpm1p <- data.table::fread(input = log2_tpm1p_path) %>%
   left_join(gene_metadata[, c("ensembl_gene_id_version", "ensembl_gene_id")],
             by = join_by(ensembl_gene_id_version)) %>%
@@ -84,13 +88,7 @@ log2_tpm1p <- log2_tpm1p[keep,]
 
 use_data(log2_tpm1p, overwrite = T)
 
-deseq2_results <- read_rds(file = deseq2_res_path) %>%
-  select(ensembl_gene_id_version, ensembl_gene_id, gene_symbol = gene_name, baseMean:padj, sign_log2fc_times_minus_log10pvalue)
-
-deseq2_results <- deseq2_results[match(x = keep, table = deseq2_results$ensembl_gene_id),]
-
-use_data(deseq2_results, overwrite = T)
-
+# MAST DGE results
 mast_results <- read_rds(file = mast_res_path) %>%
   select(ensembl_gene_id_version, ensembl_gene_id, gene_symbol = gene_name, `Pr(>Chisq)`:sign_log2fc_times_minus_log10pvalue)
 
@@ -98,6 +96,28 @@ mast_results <- mast_results[match(x = keep, table = mast_results$ensembl_gene_i
 
 use_data(mast_results, overwrite = T)
 
+# DESeq2 DGE results
+deseq2_results <- read_rds(file = deseq2_res_path) %>%
+  select(ensembl_gene_id_version, ensembl_gene_id, gene_symbol = gene_name, baseMean:padj, sign_log2fc_times_minus_log10pvalue)
 
+deseq2_results <- deseq2_results[match(x = keep, table = deseq2_results$ensembl_gene_id),]
 
+use_data(deseq2_results, overwrite = T)
+
+# Sample metadata
+sample_metadata <- read_rds(file = sample_metadata_path)
+
+sample_metadata <- sample_metadata[match(x = colnames(log2_tpm1p), table = sample_metadata$barcode),] %>%
+  select(barcode, donor_id = line_name, treatment = exposure) %>%
+  mutate(donor_id = case_when(donor_id == "B856" ~ "donor1",
+                              donor_id == "B156" ~ "donor2",
+                              donor_id == "B067" ~ "donor3",
+                              T ~ NA_character_) %>%
+           fct_relevel(c("donor1", "donor2", "donor3")),
+         treatment = case_when(treatment == "TRIP-exposed" ~ "treated",
+                               treatment == "unexposed" ~ "untreated",
+                               T ~ NA_character_) %>%
+           fct_relevel(c("untreated", "treated")))
+
+use_data(sample_metadata, overwrite = T)
 

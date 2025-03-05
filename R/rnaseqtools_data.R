@@ -59,4 +59,16 @@
 #' }
 "deseq2_results"
 
+#' Sample metadata
+#'
+#' Example sample metadata table matching the log2(TPM+1) matrix.
+#'
+#' @format A tibble with 547 rows and 3 variables:
+#' \describe{
+#'   \item{barcode}{cell barcodes matching the column names of the log2(TPM+1) matrix}
+#'   \item{donor_id}{donor ID (donor1, donor2 or donor3)}
+#'   \item{treatment}{treatment status (untreated or treated)}
+#' }
+"sample_metadata"
+
 
