@@ -19,6 +19,7 @@ BugReports: https://github.com/benvallin/rnaseqtools/issues
 Imports: 
     dplyr,
     magrittr,
+    MatrixGenerics,
     purrr,
     rlang,
     tibble,
