@@ -121,3 +121,31 @@ sample_metadata <- sample_metadata[match(x = colnames(log2_tpm1p), table = sampl
 
 use_data(sample_metadata, overwrite = T)
 
+# GSEA-related datasets ---------------------------------------------------
+
+# Multi fgsea results
+multi_fgsea_results <- multi_fgsea(input = get_msigdb_collections(),
+                             collections = c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP"),
+                             stats = deseq2_results %>%
+                               dplyr::arrange(dplyr::desc(sign_log2fc_times_minus_log10pvalue)) %>%
+                               dplyr::pull(sign_log2fc_times_minus_log10pvalue, ensembl_gene_id),
+                             gene_id = "ensembl_gene_id",
+                             padj_threshold = 0.05,
+                             nPermSimple = 10000)
+
+use_data(multi_fgsea_results, overwrite = T)
+
+# Multi fora results
+multi_fora_results <- multi_fora(input = get_msigdb_collections(),
+                                 collections = c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP"),
+                                 genes = mast_results %>%
+                                   dplyr::filter(log2fc < 0,
+                                                 padj < 0.05) %>%
+                                   dplyr::pull(ensembl_gene_id),
+                                 universe = mast_results %>%
+                                   dplyr::filter(!is.na(log2fc)) %>%
+                                   dplyr::pull(ensembl_gene_id),
+                                 gene_id = "ensembl_gene_id",
+                                 padj_threshold = 0.05)
+
+use_data(multi_fora_results, overwrite = T)

@@ -21,9 +21,9 @@ multi_fora(
 
 \item{collections}{character vector of gene collection names. All elements must be column names of input.}
 
-\item{genes}{set of query genes.}
+\item{genes}{set of query genes. Should be in the gene_id column of input.}
 
-\item{universe}{a universe from which genes were selected.}
+\item{universe}{a universe from which genes were selected. Should be in the gene_id column of input.}
 
 \item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
 

@@ -20,7 +20,7 @@ multi_fgsea(
 
 \item{collections}{character vector of gene collection names. All elements must be column names of input.}
 
-\item{stats}{named vector of gene-level stats. Names should be the same as in gene_id.}
+\item{stats}{named vector of gene-level stats. Names should be in the gene_id column of input.}
 
 \item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
 

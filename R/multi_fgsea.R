@@ -2,7 +2,7 @@
 #'
 #' @param input data.frame or tibble with gene_id column and collections list-columns.
 #' @param collections character vector of gene collection names. All elements must be column names of input.
-#' @param stats named vector of gene-level stats. Names should be the same as in gene_id.
+#' @param stats named vector of gene-level stats. Names should be in the gene_id column of input.
 #' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
 #' @param min_set_size minimal size of a gene set to test. All gene sets below the threshold are excluded.
 #' @param max_set_size maximal size of a gene set to test. All gene sets above the threshold are excluded.
@@ -68,6 +68,29 @@ multi_fgsea <- function(input,
      padj_threshold < 0) {
     stop("Invalid padj_threshold argument.",
          call. = F)
+  }
+
+  stats_names <- unique(names(stats))
+  n_stats_names <- length(stats_names)
+  n_stats_names_in_input <- sum(stats_names %in% unique(input[[gene_id]]))
+
+  if(n_stats_names_in_input < n_stats_names) {
+
+    warning("Only ", n_stats_names_in_input, " / ", n_stats_names, " (",
+            round(n_stats_names_in_input / n_stats_names * 100, 3), "%) stats names found in column ",
+            gene_id, " of input.\nCheck that stats names and gene_id refer to the same thing!\n",
+            call. = F, immediate. = T)
+
+  }
+
+  n_stats <- length(stats)
+  n_na_stats <- sum(is.na(stats))
+
+  if(n_na_stats > 0L) {
+
+    warning("Discarding ", n_na_stats, " / ", n_stats, " genes with NA stats.\n",
+            call. = F, immediate. = T)
+
   }
 
   stats <- stats::na.omit(stats)

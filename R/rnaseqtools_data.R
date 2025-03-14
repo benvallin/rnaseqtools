@@ -71,4 +71,41 @@
 #' }
 "sample_metadata"
 
+#' Multi fgsea results
+#'
+#' Example results table produced by rnaseqtools::multi_fgsea.
+#'
+#' @format A tibble with 32 rows and 12 variables:
+#' \describe{
+#'   \item{collection}{collection name (e.g.: MSigDB_C2_CP:REACTOME)}
+#'   \item{set_name}{gene set name (e.g.: REACTOME_PHOSPHOLIPID_METABOLISM)}
+#'   \item{pval}{see ?fgsea::fgsea}
+#'   \item{padj}{see ?fgsea::fgsea}
+#'   \item{log2err}{see ?fgsea::fgsea}
+#'   \item{ES}{see ?fgsea::fgsea}
+#'   \item{NES}{see ?fgsea::fgsea}
+#'   \item{size}{see ?fgsea::fgsea}
+#'   \item{leadingEdge}{see ?fgsea::fgsea}
+#'   \item{n_leadingEdge}{number of genes in leading edge)}
+#'   \item{n_leadingEdge_over_total}{number of genes in leading edge over number of genes in gene set}
+#'   \item{pct_leadingEdge}{percentage of gene set being leading edge}
+#' }
+"multi_fgsea_results"
 
+#' Multi fora results
+#'
+#' Example results table produced by rnaseqtools::multi_fora.
+#'
+#' @format A tibble with 49 rows and 9 variables:
+#' \describe{
+#'   \item{collection}{collection name (e.g.: MSigDB_H)}
+#'   \item{set_name}{gene set name (e.g.: HALLMARK_OXIDATIVE_PHOSPHORYLATION)}
+#'   \item{pval}{see ?fgsea::fora}
+#'   \item{padj}{see ?fgsea::fora}
+#'   \item{overlap}{see ?fgsea::fora}
+#'   \item{size}{see ?fgsea::fora}
+#'   \item{overlapGenes}{vector with overlapping genes}
+#'   \item{n_overlapGenes}{number of overlapping genes over number of genes in gene set}
+#'   \item{pct_overlapGenes}{percentage of gene set being overlapping genes}
+#' }
+"multi_fora_results"

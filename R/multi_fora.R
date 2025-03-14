@@ -2,8 +2,8 @@
 #'
 #' @param input data.frame or tibble with gene_id column and collections list-columns.
 #' @param collections character vector of gene collection names. All elements must be column names of input.
-#' @param genes set of query genes.
-#' @param universe a universe from which genes were selected.
+#' @param genes set of query genes. Should be in the gene_id column of input.
+#' @param universe a universe from which genes were selected. Should be in the gene_id column of input.
 #' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
 #' @param min_set_size minimal size of a gene set to test. All gene sets below the threshold are excluded.
 #' @param max_set_size maximal size of a gene set to test. All gene sets above the threshold are excluded.
@@ -86,6 +86,40 @@ multi_fora <- function(input,
      padj_threshold < 0) {
     stop("Invalid padj_threshold argument.",
          call. = F)
+  }
+
+  n_genes <- length(unique(genes))
+  n_genes_in_input <- sum(genes %in% unique(input[[gene_id]]))
+
+  if(n_genes_in_input < n_genes) {
+
+    warning("Only ", n_genes_in_input, " / ", n_genes, " (",
+            round(n_genes_in_input / n_genes * 100, 3), "%) genes found in column ",
+            gene_id, " of input.\nCheck that genes and gene_id refer to the same thing!\n",
+            call. = F, immediate. = T)
+
+  }
+
+  n_universe <- length(unique(universe))
+  n_universe_in_input <- sum(universe %in% unique(input[[gene_id]]))
+
+  if(n_universe_in_input < n_universe) {
+
+    warning("Only ", n_universe_in_input, " / ", n_universe, " (",
+            round(n_universe_in_input / n_universe * 100, 3), "%) universe genes found in column ",
+            gene_id, " of input.\nCheck that universe and gene_id refer to the same thing!\n",
+            call. = F, immediate. = T)
+
+  }
+
+  n_genes_not_in_universe <- length(unique(genes[!genes %in% universe]))
+
+  if(n_genes_not_in_universe > 0L) {
+
+    warning(n_genes_not_in_universe, " / ", n_genes,
+            " genes are not in universe.\nMake sure that all genes belong to the universe!\n",
+            call. = F, immediate. = T)
+
   }
 
   collections <- make_fgsea_pathways(input = input,

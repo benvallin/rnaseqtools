@@ -1,8 +1,8 @@
 #' Make gene metadata
 #'
-#' @param input A GENCODE annotation data.frame or tibble as produced by import_gencode_annotation.
+#' @param input GENCODE annotation data.frame or tibble as produced by import_gencode_annotation.
 #'
-#' @return A tibble with gene metadata.
+#' @return a tibble with gene metadata.
 #' @export
 #'
 #' @examples
@@ -33,7 +33,7 @@ make_gene_metadata <- function(input) {
   keep <- c("transcript_id", "gene_id", "gene_name", "gene_type", "seqnames")
 
   if(!is.data.frame(input) || !all(keep %in% colnames(input))) {
-    stop("Input must be a tibble with columns \"transcript_id\", \"gene_id\", \"gene_name\", \"gene_type\" and \"seqnames\".",
+    stop("Input must be a data.frame or tibble with columns \"transcript_id\", \"gene_id\", \"gene_name\", \"gene_type\" and \"seqnames\".",
          call. = F)
   }
 

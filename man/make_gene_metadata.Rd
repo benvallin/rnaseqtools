@@ -7,10 +7,10 @@
 make_gene_metadata(input)
 }
 \arguments{
-\item{input}{A GENCODE annotation data.frame or tibble as produced by import_gencode_annotation.}
+\item{input}{GENCODE annotation data.frame or tibble as produced by import_gencode_annotation.}
 }
 \value{
-A tibble with gene metadata.
+a tibble with gene metadata.
 }
 \description{
 Make gene metadata
