@@ -8,7 +8,7 @@
 #'
 #' @examples
 #' # Get genes in overlap
-#' overlap <- get_overlap(input = multi_fora_results,
+#' overlap <- get_overlap(input = multi_fora_results_ex,
 #'                        set_name = "HALLMARK_OXIDATIVE_PHOSPHORYLATION")
 #'
 get_overlap <- function(input,

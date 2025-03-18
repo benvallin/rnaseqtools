@@ -20,15 +20,15 @@
 #' # Define collections of interest
 #' collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
 #'
-#' # Extract genes significantly downregulated (log2fc < 0 and padj < 0.05) from MAST results
-#' genes <- mast_results %>%
-#'   dplyr::filter(log2fc < 0,
+#' # Extract genes significantly downregulated (log2FoldChange < 0 and padj < 0.05) from MAST results
+#' genes <- mast_results_ex %>%
+#'   dplyr::filter(log2FoldChange < 0,
 #'                 padj < 0.05) %>%
 #'   dplyr::pull(ensembl_gene_id)
 #'
 #' # Extract corresponding universe from MAST results
-#' universe <- mast_results %>%
-#'   dplyr::filter(!is.na(log2fc)) %>%
+#' universe <- mast_results_ex %>%
+#'   dplyr::filter(!is.na(log2FoldChange)) %>%
 #'   dplyr::pull(ensembl_gene_id)
 #'
 #' # Run fgsea::fora on selected collections
@@ -42,7 +42,7 @@ multi_fora <- function(input,
                        collections,
                        genes,
                        universe,
-                       gene_id = "ensembl_gene_id_version",
+                       gene_id = "ensembl_gene_id",
                        min_set_size = 1,
                        max_set_size = NULL,
                        padj_threshold = Inf,

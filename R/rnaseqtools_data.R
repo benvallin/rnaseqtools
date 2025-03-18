@@ -1,6 +1,6 @@
 #' Gene metadata
 #'
-#' Gene metadata derived from GENCODE annotation - Human release 46.
+#' Example gene metadata derived from GENCODE annotation - Human release 46.
 #' It can be produced by successive calls to download_gencode_annotation, import_gencode_annotation and make_gene_metadata.
 #'
 #' @format A tibble with 63140 rows and 5 variables:
@@ -11,38 +11,53 @@
 #'   \item{gene_type}{gene type (e.g.: protein_coding)}
 #'   \item{chr_name}{chromosome name (e.g.: chr4))}
 #' }
-"gene_metadata"
+"gene_metadata_ex"
 
 #' log2(TPM+1) matrix
 #'
 #' Example log2(TPM+1) matrix with column and row names representing cell barcodes and ensembl gene IDs, respectively.
 #' The matrix has 1000 rows and 547 columns.
 #'
-"log2_tpm1p"
+"log2_tpm1p_ex"
+
+#' MAST summaryZlmFit
+#'
+#' Example summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) using the workflow described at \url{https://bioconductor.org/packages/release/bioc/vignettes/MAST/inst/doc/MAITAnalysis.html}.
+#' The object contains a data.table filtered on rows and columns to limit its size. The resulting data.table contains 2000 rows and 7 columns.
+#'
+"summaryZlmFit_ex"
 
 #' MAST results
 #'
-#' Example results table derived from MAST::zlm using the workflow described at \url{https://bioconductor.org/packages/release/bioc/vignettes/MAST/inst/doc/MAITAnalysis.html}.
-#' The table was augmented with columns for alternative gene IDs, adjusted p value, log2 fold change and gene ranking metric.
+#' Example MAST results table produced by rnaseqtools::tidy_summaryZlmFit.
+#' The table was augmented with columns for alternative gene IDs.
 #'
-#' @format A tibble with 1000 rows and 10 variables:
+#' @format A tibble with 1000 rows and 11 variables:
 #' \describe{
 #'   \item{ensembl_gene_id_version}{ensembl gene ID with version number (e.g.: ENSG00000145335.17)}
 #'   \item{ensembl_gene_id}{ensembl gene ID (e.g.: ENSG00000145335)}
 #'   \item{gene_symbol}{gene symbol (e.g.: SNCA)}
-#'   \item{Pr(>Chisq)}{see ?DESeq2::results}
-#'   \item{coef}{see ?DESeq2::results}
-#'   \item{ci.hi}{see ?DESeq2::results}
-#'   \item{ci.lo}{see ?DESeq2::results}
+#'   \item{Pr(>Chisq)}{see ?MAST::`summary,ZlmFit-method`}
+#'   \item{coef}{see ?MAST::`summary,ZlmFit-method`}
+#'   \item{ci.hi}{see ?MAST::`summary,ZlmFit-method`}
+#'   \item{ci.lo}{see ?MAST::`summary,ZlmFit-method`}
+#'   \item{log2FoldChange}{log2 fold change computed as coef / log(x = 2, base = exp(1))}
+#'   \item{lfcSE}{log2 fold change standard error computed from upper and lower bounds of confidence interval and level of confidence coefficient}
 #'   \item{padj}{adjusted p value computed as p.adjust(p = `Pr(>Chisq)`, method = "BH")}
-#'   \item{log2fc}{log2 fold change computed as coef / log(x = 2, base = exp(1))}
-#'   \item{sign_log2fc_times_minus_log10pvalue}{gene ranking metric computed as sign(log2fc) * -log(x = `Pr(>Chisq)`, base = 10)}
+#'   \item{sign_log2fc_times_minus_log10pvalue}{gene ranking metric computed as sign(log2FoldChange) * -log(x = `Pr(>Chisq)`, base = 10)}
 #' }
-"mast_results"
+"mast_results_ex"
+
+#' DESeq2 DESeqResults
+#'
+#' Example DESeqResults object produced by DESeq2::results.
+#'
+"DESeqResults_ex"
 
 #' DESeq2 results
 #'
-#' Example results table produced by DESeq2::results. The table was augmented with columns for alternative gene IDs and gene ranking metric.
+#' Example DESeq2 results table produced by rnaseqtools::tidy_DESeqResults.
+#' The table was augmented with columns for alternative gene IDs.
 #'
 #' @format A tibble with 1000 rows and 10 variables:
 #' \describe{
@@ -57,7 +72,7 @@
 #'   \item{padj}{see ?DESeq2::results}
 #'   \item{sign_log2fc_times_minus_log10pvalue}{gene ranking metric computed as sign(log2FoldChange) * -log(x = pvalue, base = 10)}
 #' }
-"deseq2_results"
+"deseq2_results_ex"
 
 #' Sample metadata
 #'
@@ -69,13 +84,13 @@
 #'   \item{donor_id}{donor ID (donor1, donor2 or donor3)}
 #'   \item{treatment}{treatment status (untreated or treated)}
 #' }
-"sample_metadata"
+"sample_metadata_ex"
 
 #' Multi fgsea results
 #'
 #' Example results table produced by rnaseqtools::multi_fgsea.
 #'
-#' @format A tibble with 32 rows and 12 variables:
+#' @format A tibble with 12 columns:
 #' \describe{
 #'   \item{collection}{collection name (e.g.: MSigDB_C2_CP:REACTOME)}
 #'   \item{set_name}{gene set name (e.g.: REACTOME_PHOSPHOLIPID_METABOLISM)}
@@ -90,13 +105,13 @@
 #'   \item{n_leadingEdge_over_total}{number of genes in leading edge over number of genes in gene set}
 #'   \item{pct_leadingEdge}{percentage of gene set being leading edge}
 #' }
-"multi_fgsea_results"
+"multi_fgsea_results_ex"
 
 #' Multi fora results
 #'
 #' Example results table produced by rnaseqtools::multi_fora.
 #'
-#' @format A tibble with 49 rows and 9 variables:
+#' @format A tibble with 9 columns:
 #' \describe{
 #'   \item{collection}{collection name (e.g.: MSigDB_H)}
 #'   \item{set_name}{gene set name (e.g.: HALLMARK_OXIDATIVE_PHOSPHORYLATION)}
@@ -108,4 +123,4 @@
 #'   \item{n_overlapGenes}{number of overlapping genes over number of genes in gene set}
 #'   \item{pct_overlapGenes}{percentage of gene set being overlapping genes}
 #' }
-"multi_fora_results"
+"multi_fora_results_ex"

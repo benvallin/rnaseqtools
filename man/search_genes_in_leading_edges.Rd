@@ -21,11 +21,11 @@ Search genes in leading edges
 }
 \examples{
 # Get leading edge for KEGG_RIBOSOME gene set
-genes <- get_leading_edge(input = multi_fgsea_results,
+genes <- get_leading_edge(input = multi_fgsea_results_ex,
                           set_name = "KEGG_RIBOSOME")
 
 # Search genes representing KEGG_RIBOSOME leading edge in all leading edges
-search_results <- search_genes_in_leading_edges(input = multi_fgsea_results,
+search_results <- search_genes_in_leading_edges(input = multi_fgsea_results_ex,
                                                 gene_ids = genes,
                                                 group_name = "ribosome")
 

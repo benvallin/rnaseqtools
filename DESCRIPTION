@@ -20,12 +20,14 @@ Imports:
     dplyr,
     magrittr,
     MatrixGenerics,
+    methods,
     purrr,
     rlang,
     tibble,
     tidyr,
     tidyselect
 Suggests: 
+    DESeq2,
     fgsea,
     limma,
     msigdbr,

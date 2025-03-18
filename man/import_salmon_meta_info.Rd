@@ -17,6 +17,6 @@ Import Salmon's metadata
 }
 \examples{
 # Import Salmon's run metadata
-meta_info <- import_salmon_meta_info(file = rnaseqtools_example(file = "meta_info.json"))
+meta_info <- import_salmon_meta_info(file = rnaseqtools_example(file = "meta_info_ex.json"))
 
 }

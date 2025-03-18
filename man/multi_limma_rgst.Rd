@@ -57,12 +57,12 @@ collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", 
 # Define design matrix
 model_formula <- "~ treatment + donor_id"
 
-design <- model.matrix(object = formula(model_formula), data = sample_metadata)
+design <- model.matrix(object = formula(model_formula), data = sample_metadata_ex)
 
 design <- design[, which(colSums(design) != 0), drop = FALSE]
 
 # Run limma::fry on selected collections
-fry_results <- multi_limma_rgst(y = log2_tpm1p,
+fry_results <- multi_limma_rgst(y = log2_tpm1p_ex,
                                 input = msigdb_collection_table,
                                 collections = collection_names,
                                 design = design,

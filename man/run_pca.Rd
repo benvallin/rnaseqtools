@@ -35,7 +35,7 @@ Run PCA
 \examples{
 
 # Run PCA
-pca_results <- run_pca(input = log2_tpm1p,
+pca_results <- run_pca(input = log2_tpm1p_ex,
                        pcs = 1:10)
 
 }

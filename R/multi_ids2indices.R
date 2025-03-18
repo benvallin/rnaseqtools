@@ -16,7 +16,7 @@
 #' collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
 #'
 #' # Extract gene identifiers from log2 COUNT+1 matrix
-#' identifiers <- rownames(log2_tpm1p)
+#' identifiers <- rownames(log2_tpm1p_ex)
 #'
 #' # Get lists of indices for selected collections
 #' collections <- multi_ids2indices(input = msigdb_collection_table,

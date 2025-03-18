@@ -46,7 +46,7 @@ msigdb_collection_table = get_msigdb_collections()
 collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
 
 # Extract gene ranking metric from DESeq2 results
-stats <- deseq2_results \%>\%
+stats <- deseq2_results_ex \%>\%
   dplyr::arrange(dplyr::desc(sign_log2fc_times_minus_log10pvalue)) \%>\%
   dplyr::pull(sign_log2fc_times_minus_log10pvalue, ensembl_gene_id)
 

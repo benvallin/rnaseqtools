@@ -15,6 +15,6 @@ rnaseqtools comes bundled with a number of sample files in its inst/extdata dire
 \examples{
 rnaseqtools_example()
 
-rnaseqtools_example(file = "meta_info.json")
+rnaseqtools_example(file = "meta_info_ex.json")
 
 }
