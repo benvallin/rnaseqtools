@@ -16,14 +16,15 @@
 #' log2(TPM+1) matrix
 #'
 #' Example log2(TPM+1) matrix with column and row names representing cell barcodes and ensembl gene IDs, respectively.
-#' The matrix has 1000 rows and 547 columns.
+#' The matrix has 500 rows and 547 columns.
 #'
 "log2_tpm1p_ex"
 
 #' MAST summaryZlmFit
 #'
-#' Example summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) using the workflow described at \url{https://bioconductor.org/packages/release/bioc/vignettes/MAST/inst/doc/MAITAnalysis.html}.
-#' The object contains a data.table filtered on rows and columns to limit its size. The resulting data.table contains 2000 rows and 7 columns.
+#' Example summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) using the workflow described at:
+#' \url{https://bioconductor.org/packages/release/bioc/vignettes/MAST/inst/doc/MAITAnalysis.html}.
+#' The object contains a data.table with 1000 rows and 7 columns.
 #'
 "summaryZlmFit_ex"
 
@@ -32,7 +33,7 @@
 #' Example MAST results table produced by rnaseqtools::tidy_summaryZlmFit.
 #' The table was augmented with columns for alternative gene IDs.
 #'
-#' @format A tibble with 1000 rows and 11 variables:
+#' @format A tibble with 500 rows and 11 variables:
 #' \describe{
 #'   \item{ensembl_gene_id_version}{ensembl gene ID with version number (e.g.: ENSG00000145335.17)}
 #'   \item{ensembl_gene_id}{ensembl gene ID (e.g.: ENSG00000145335)}
@@ -59,7 +60,7 @@
 #' Example DESeq2 results table produced by rnaseqtools::tidy_DESeqResults.
 #' The table was augmented with columns for alternative gene IDs.
 #'
-#' @format A tibble with 1000 rows and 10 variables:
+#' @format A tibble with 500 rows and 10 variables:
 #' \describe{
 #'   \item{ensembl_gene_id_version}{ensembl gene ID with version number (e.g.: ENSG00000145335.17)}
 #'   \item{ensembl_gene_id}{ensembl gene ID (e.g.: ENSG00000145335)}
@@ -124,3 +125,26 @@
 #'   \item{pct_overlapGenes}{percentage of gene set being overlapping genes}
 #' }
 "multi_fora_results_ex"
+
+#' Splici txi
+#'
+#' Example txi object produced by tximport::tximport and to supply to rnaseqtools::split_splici_txi.
+#' It contains gene-level estimates of counts, abundances and lengths for spliced and unspliced transcripts.
+#' To generate reference files for spliced and unspliced abundance estimation with alignment-free methods, see the worflow described at:
+#' \url{https://bioconductor.org/packages/release/bioc/vignettes/eisaR/inst/doc/rna-velocity.html}.
+#'
+
+"txi_ex"
+
+#' Split dataframe
+#'
+#' Example split_df to supply to rnaseqtools::split_splici_txi.
+#' To generate reference files for spliced and unspliced abundance estimation with alignment-free methods, see the worflow described at:
+#' \url{https://bioconductor.org/packages/release/bioc/vignettes/eisaR/inst/doc/rna-velocity.html}.
+#'
+#' @format A data.frame with 2 columns:
+#' \describe{
+#'   \item{spliced}{gene ID for spliced transcript (e.g.: ENSG00000005486.17 )}
+#'   \item{unspliced}{gene ID for unspliced transcript (e.g.: ENSG00000005486.17-I)}
+#' }
+"split_df_ex"

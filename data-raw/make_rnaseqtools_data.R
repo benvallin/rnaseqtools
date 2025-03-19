@@ -23,6 +23,18 @@ mast_ZlmFit_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gse
 # Path to DESeq2 DESeqResults file (rds)
 deseq2_DESeqResults_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_zinbwave_deseq2/deseq2_lrt_res_raw_count_lengthScaledTPM_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2_scran_sf_model_formula~_line_name_+_exposure_padj0.05.rds"
 
+# Path to directory containing Salmon quant files
+salmon_quant_dir_path <- "/scratch/ben/rnaseq/seq_data/ben/coculture_div67/gencode_v46/05_salmon_splici_quant/"
+
+# Path to transcript metadata file (csv)
+transcript_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/feature_metadata/transcript_metadata.csv"
+
+# Path to splici metadata file (tsv)
+splici_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.tx2gene_expanded.tsv"
+
+# Path to spliced - unspliced gene ID correspondence file (tsv)
+split_df_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.features_expanded.tsv"
+
 # Set up ------------------------------------------------------------------
 
 # Append trailing "/" to directory paths if missing
@@ -85,7 +97,7 @@ log2_tpm1p_ex <- data.table::fread(input = log2_tpm1p_path) %>%
   column_to_rownames(var = "ensembl_gene_id") %>%
   as.matrix()
 
-keep <- names(head(x = sort(x = rowMeans(log2_tpm1p_ex), decreasing = T), n = 1000L))
+keep <- names(head(x = sort(x = rowMeans(log2_tpm1p_ex), decreasing = T), n = 500L))
 
 log2_tpm1p_ex <- log2_tpm1p_ex[keep,]
 
@@ -216,3 +228,65 @@ multi_fora_results_ex <- multi_fora(input = get_msigdb_collections(),
                                     padj_threshold = 0.05)
 
 use_data(multi_fora_results_ex, overwrite = T)
+
+# splici ------------------------------------------------------------------
+
+# Import sample metadata
+sample_metadata <- read_rds(file = sample_metadata_path)
+
+sample_metadata <- sample_metadata[101:105, c("barcode", "barcode_spe_dirs")]
+
+sample_metadata <- sample_metadata %>%
+  mutate(files = setNames(object = map_chr(.x = barcode_spe_dirs,
+                                           .f = ~ list.files(path = paste0(salmon_quant_dir_path, .x),
+                                                             pattern = "quant.sf",
+                                                             full.names = TRUE)),
+                          nm = barcode)) %>%
+  select(files, everything())
+
+# Import transcript metadata
+transcript_metadata <- read_csv(transcript_metadata_path)
+
+keep <- unique(transcript_metadata$ensembl_gene_id_version)[101:110]
+
+transcript_metadata <- transcript_metadata[transcript_metadata$ensembl_gene_id_version %in% keep,]
+
+# Import splici metadata
+splici_metadata <- read_tsv(splici_metadata_path, col_names = c("ensembl_transcript_id_version", "ensembl_gene_id_version"))
+
+subset_splici_metadata <- function(splici_metadata, gene_ids) {
+
+  keep <- lapply(X = gene_ids,
+                 FUN = function(x) {
+                   str_detect(splici_metadata$ensembl_gene_id_version, x)
+                 })
+
+  keep <- as.data.frame(keep, col.names = gene_ids)
+
+  keep <- rowSums(keep)
+
+  keep <- ifelse(keep == 1, T, F)
+
+  splici_metadata[keep,]
+
+}
+
+splici_metadata <- subset_splici_metadata(splici_metadata = splici_metadata,
+                                          gene_ids = keep)
+
+# Import spliced - unspliced gene ID correspondence
+split_df_ex <- read.delim(split_df_path, header = T, as.is = T) %>%
+  dplyr::rename(unspliced = intron)
+
+split_df_ex <- split_df_ex[split_df_ex$spliced %in% keep,]
+
+use_data(split_df_ex, overwrite = T)
+
+# Construct txi
+txi_ex <- tximport::tximport(files = sample_metadata$files,
+                             type = "salmon",
+                             txOut = FALSE,
+                             countsFromAbundance = "no",
+                             tx2gene = splici_metadata)
+
+use_data(txi_ex, overwrite = T)

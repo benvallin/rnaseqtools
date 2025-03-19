@@ -5,7 +5,7 @@
 \alias{mast_results_ex}
 \title{MAST results}
 \format{
-A tibble with 1000 rows and 11 variables:
+A tibble with 500 rows and 11 variables:
 \describe{
 \item{ensembl_gene_id_version}{ensembl gene ID with version number (e.g.: ENSG00000145335.17)}
 \item{ensembl_gene_id}{ensembl gene ID (e.g.: ENSG00000145335)}

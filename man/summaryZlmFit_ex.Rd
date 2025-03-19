@@ -11,7 +11,8 @@ An object of class \code{summaryZlmFit} (inherits from \code{list}) of length 1.
 summaryZlmFit_ex
 }
 \description{
-Example summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) using the workflow described at \url{https://bioconductor.org/packages/release/bioc/vignettes/MAST/inst/doc/MAITAnalysis.html}.
-The object contains a data.table filtered on rows and columns to limit its size. The resulting data.table contains 2000 rows and 7 columns.
+Example summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) using the workflow described at:
+\url{https://bioconductor.org/packages/release/bioc/vignettes/MAST/inst/doc/MAITAnalysis.html}.
+The object contains a data.table with 1000 rows and 7 columns.
 }
 \keyword{datasets}

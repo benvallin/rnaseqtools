@@ -5,13 +5,13 @@
 \alias{log2_tpm1p_ex}
 \title{log2(TPM+1) matrix}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 1000 rows and 547 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 500 rows and 547 columns.
 }
 \usage{
 log2_tpm1p_ex
 }
 \description{
 Example log2(TPM+1) matrix with column and row names representing cell barcodes and ensembl gene IDs, respectively.
-The matrix has 1000 rows and 547 columns.
+The matrix has 500 rows and 547 columns.
 }
 \keyword{datasets}

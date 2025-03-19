@@ -5,7 +5,7 @@
 \alias{DESeqResults_ex}
 \title{DESeq2 DESeqResults}
 \format{
-An object of class \code{DESeqResults} with 1000 rows and 6 columns.
+An object of class \code{DESeqResults} with 500 rows and 6 columns.
 }
 \usage{
 DESeqResults_ex
