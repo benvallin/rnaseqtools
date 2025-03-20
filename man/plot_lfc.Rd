@@ -17,8 +17,7 @@ plot_lfc(
   desc_lfc = TRUE,
   xintercepts = NULL,
   padj_lab = TRUE,
-  lab_nudge = 0.2,
-  show_unicode = T
+  lab_nudge = 0.02
 )
 }
 \arguments{
@@ -47,8 +46,6 @@ plot_lfc(
 \item{padj_lab}{logical vector of length 1 indicating if padj values should be displayed.}
 
 \item{lab_nudge}{numerical vector of length 1 representing the amount of horizontal nudge to use for padj labels.}
-
-\item{show_unicode}{logical vector of length 1 indicating if Unicode-encoded characters should be used.}
 }
 \value{
 a ggplot object with log2 fold changes for the selected genes in test vs reference conditions.
@@ -74,7 +71,6 @@ plot_lfc(input = deseq2_results_ex,
          desc_lfc = FALSE,
          xintercepts = seq(0.5, 2, 0.5),
          padj_lab = TRUE,
-         lab_nudge = 0.02,
-         show_unicode = FALSE)
+         lab_nudge = 0.02)
 
 }

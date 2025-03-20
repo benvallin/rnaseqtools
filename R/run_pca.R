@@ -29,7 +29,7 @@ run_pca <- function(input,
 
   }
 
-  var <- MatrixGenerics::rowVars(x = input)
+  var <- matrixStats::rowVars(x = input)
 
   top_var <- order(var, decreasing = T)[seq_len(min(ntop, length(var)))]
 

@@ -13,7 +13,6 @@
 #' @param xintercepts numeric vector of x positions where vertical lines should be drawn. Passed to ggplot2::geom_vline.
 #' @param padj_lab logical vector of length 1 indicating if padj values should be displayed.
 #' @param lab_nudge numerical vector of length 1 representing the amount of horizontal nudge to use for padj labels.
-#' @param show_unicode logical vector of length 1 indicating if Unicode-encoded characters should be used.
 #'
 #' @return a ggplot object with log2 fold changes for the selected genes in test vs reference conditions.
 #' @export
@@ -36,8 +35,7 @@
 #'          desc_lfc = FALSE,
 #'          xintercepts = seq(0.5, 2, 0.5),
 #'          padj_lab = TRUE,
-#'          lab_nudge = 0.02,
-#'          show_unicode = FALSE)
+#'          lab_nudge = 0.02)
 #'
 plot_lfc <- function(input,
                      genes,
@@ -51,8 +49,7 @@ plot_lfc <- function(input,
                      desc_lfc = TRUE,
                      xintercepts = NULL,
                      padj_lab = TRUE,
-                     lab_nudge = 0.2,
-                     show_unicode = TRUE) {
+                     lab_nudge = 0.02) {
 
   if(!is.character(gene_id) ||
      length(gene_id) != 1L ||
@@ -142,12 +139,6 @@ plot_lfc <- function(input,
          call. = F)
   }
 
-  if(!is.logical(show_unicode) ||
-     length(show_unicode) != 1L) {
-    stop("Invalid show_unicode argument.",
-         call. = F)
-  }
-
   df <- input
 
   df <- df[df[[gene_id]] %in% genes & !is.na(df$log2FoldChange),]
@@ -156,9 +147,7 @@ plot_lfc <- function(input,
     dplyr::mutate(padj_cat = dplyr::case_when(.data$padj < 0.01 ~ "padj < 0.01",
                                               .data$padj < 0.05 ~ "padj < 0.05",
                                               .data$padj < 0.1 ~ "padj < 0.1",
-                                              .data$padj >= 0.1 ~ ifelse(show_unicode,
-                                                                         "padj \u2265 0.1",
-                                                                         "padj >= 0.1"),
+                                              .data$padj >= 0.1 ~ "padj \u2265 0.1",
                                               is.na(.data$padj) ~ "padj not computed"),
                   padj_color = dplyr::case_when(.data$padj < 0.01 ~ "#e0007f",
                                                 .data$padj < 0.05 ~ "#b892ff",
@@ -193,15 +182,13 @@ plot_lfc <- function(input,
                                  dplyr::arrange(.data$padj) %>%
                                  dplyr::pull(.data$padj_color) %>%
                                  unique()) +
+    ggplot2::geom_linerange(mapping = ggplot2::aes(xmin = .data$log2FoldChange - .data$lfcSE,
+                                                   xmax = .data$log2FoldChange + .data$lfcSE)) +
     ggplot2::labs(title = title,
-                  x = ifelse(show_unicode,
-                             paste0("log\u2082 fold change (", test_cond, " vs ", ref_cond, ")"),
-                             paste0("log2 fold change (", test_cond, " vs ", ref_cond, ")")),
+                  x = bquote(log[2] * " fold change (" * .(test_cond) * " vs " * .(ref_cond) * ")"),
                   y = NULL,
                   fill = NULL,
-                  shape = NULL) +
-    ggplot2::geom_linerange(mapping = ggplot2::aes(xmin = .data$log2FoldChange - .data$lfcSE,
-                                                   xmax = .data$log2FoldChange + .data$lfcSE))
+                  shape = NULL)
 
   if(!is.null(xintercepts)) {
 
@@ -211,12 +198,14 @@ plot_lfc <- function(input,
   }
 
   if(padj_lab) {
+
     p <- p +
       ggplot2::geom_text(mapping = ggplot2::aes(x = .data$log2FoldChange + .data$lfcSE + lab_nudge,
                                                 label = ifelse(is.na(.data$padj),
                                                                "",
                                                                formatC(.data$padj, format = "e", digits = 1))),
                          hjust = 0)
+
   }
 
   if(is.null(key_genes)) {

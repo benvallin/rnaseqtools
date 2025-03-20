@@ -22,7 +22,7 @@ Imports:
     ggplot2,
     ggpubr,
     magrittr,
-    MatrixGenerics,
+    matrixStats,
     methods,
     purrr,
     rlang,
