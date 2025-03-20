@@ -1,23 +1,44 @@
 #' Plot log2 fold changes
 #'
 #' @param input data.frame or tibble with character columns <gene_id> and <pretty_gene_id>, and double columns log2FoldChange, lfcSE and padj.
-#' @param genes
-#' @param gene_id
-#' @param pretty_gene_id
-#' @param test_cond
-#' @param ref_cond
-#' @param key_genes
-#' @param key_genes_name
-#' @param title
-#' @param desc_lfc
-#' @param xintercepts
-#' @param padj_lab
-#' @param lab_nudge
+#' @param genes character vector of gene IDs for which log2 fold changes should be displayed. Must be of the gene ID type specified in gene_id.
+#' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
+#' @param pretty_gene_id character vector of length 1 representing alternative gene ID to use for display. Must be a column name of input.
+#' @param test_cond character vector of length 1 representing the test biological condition.
+#' @param ref_cond character vector of length 1 representing the reference biological condition.
+#' @param key_genes character vector of gene IDs representing key genes among genes. Must be of the gene ID type specified in gene_id.
+#' @param key_genes_name character vector of length 1 representing the name of the key genes group.
+#' @param title character vector of length 1 representing plot title.
+#' @param desc_lfc logical vector of length 1 indicating if log2 fold changes should be ordered in descending order.
+#' @param xintercepts numeric vector of x positions where vertical lines should be drawn. Passed to ggplot2::geom_vline.
+#' @param padj_lab logical vector of length 1 indicating if padj values should be displayed.
+#' @param lab_nudge numerical vector of length 1 representing the amount of horizontal nudge to use for padj labels.
+#' @param show_unicode logical vector of length 1 indicating if Unicode-encoded characters should be used.
 #'
-#' @return
+#' @return a ggplot object with log2 fold changes for the selected genes in test vs reference conditions.
 #' @export
 #'
 #' @examples
+#' # Extract the gene IDs of top 25 upregulated genes with smallest padj
+#' genes <- deseq2_results_ex %>%
+#'   dplyr::filter(log2FoldChange > 0) %>%
+#'   dplyr::arrange(padj) %>%
+#'   dplyr::pull(ensembl_gene_id) %>%
+#'   head(25)
+#'
+#' # Plot their log2 fold changes
+#' plot_lfc(input = deseq2_results_ex,
+#'          genes = genes,
+#'          gene_id = "ensembl_gene_id",
+#'          pretty_gene_id = "gene_symbol",
+#'          test_cond = "treated",
+#'          ref_cond = "untreated",
+#'          desc_lfc = FALSE,
+#'          xintercepts = seq(0.5, 2, 0.5),
+#'          padj_lab = TRUE,
+#'          lab_nudge = 0.02,
+#'          show_unicode = FALSE)
+#'
 plot_lfc <- function(input,
                      genes,
                      gene_id = "ensembl_gene_id",
@@ -27,10 +48,11 @@ plot_lfc <- function(input,
                      key_genes = NULL,
                      key_genes_name = "leading edge",
                      title = NULL,
-                     desc_lfc = T,
+                     desc_lfc = TRUE,
                      xintercepts = NULL,
-                     padj_lab = T,
-                     lab_nudge = 0.2) {
+                     padj_lab = TRUE,
+                     lab_nudge = 0.2,
+                     show_unicode = TRUE) {
 
   if(!is.character(gene_id) ||
      length(gene_id) != 1L ||
@@ -54,6 +76,13 @@ plot_lfc <- function(input,
      !is.double(input$lfcSE) ||
      !is.double(input$padj)) {
     stop("Input must be a data.frame or tibble with character columns <gene_id> and <pretty_gene_id>, and double columns log2FoldChange, lfcSE and padj.",
+         call. = F)
+  }
+
+  if(!is.character(genes) ||
+     (is.character(genes) && (length(genes) == 0L ||
+                              any(is.na(genes))))) {
+    stop("Invalid genes argument.",
          call. = F)
   }
 
@@ -113,6 +142,12 @@ plot_lfc <- function(input,
          call. = F)
   }
 
+  if(!is.logical(show_unicode) ||
+     length(show_unicode) != 1L) {
+    stop("Invalid show_unicode argument.",
+         call. = F)
+  }
+
   df <- input
 
   df <- df[df[[gene_id]] %in% genes & !is.na(df$log2FoldChange),]
@@ -121,8 +156,9 @@ plot_lfc <- function(input,
     dplyr::mutate(padj_cat = dplyr::case_when(.data$padj < 0.01 ~ "padj < 0.01",
                                               .data$padj < 0.05 ~ "padj < 0.05",
                                               .data$padj < 0.1 ~ "padj < 0.1",
-                                              .data$padj >= 0.1 ~ paste0("padj ",
-                                                                         utf8::utf8_encode("\u2265"), " 0.1"),
+                                              .data$padj >= 0.1 ~ ifelse(show_unicode,
+                                                                         "padj \u2265 0.1",
+                                                                         "padj >= 0.1"),
                                               is.na(.data$padj) ~ "padj not computed"),
                   padj_color = dplyr::case_when(.data$padj < 0.01 ~ "#e0007f",
                                                 .data$padj < 0.05 ~ "#b892ff",
@@ -155,11 +191,12 @@ plot_lfc <- function(input,
                    strip.text.x = ggplot2::element_text(size = 14)) +
     ggplot2::scale_fill_manual(values = df %>%
                                  dplyr::arrange(.data$padj) %>%
-                                 dplyr::pull(padj_color) %>%
+                                 dplyr::pull(.data$padj_color) %>%
                                  unique()) +
     ggplot2::labs(title = title,
-                  x = paste0("log", utf8::utf8_encode("\u2082"),
-                             " fold change (", test_cond, " vs ", ref_cond, ")"),
+                  x = ifelse(show_unicode,
+                             paste0("log\u2082 fold change (", test_cond, " vs ", ref_cond, ")"),
+                             paste0("log2 fold change (", test_cond, " vs ", ref_cond, ")")),
                   y = NULL,
                   fill = NULL,
                   shape = NULL) +
@@ -212,7 +249,7 @@ plot_lfc <- function(input,
 
     p +
       ggplot2::geom_point(data = df,
-                          ggplot2::aes(shape = in_key_genes),
+                          ggplot2::aes(shape = .data$in_key_genes),
                           color = "black",
                           size = 5,
                           stroke = 1) +
