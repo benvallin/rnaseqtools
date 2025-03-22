@@ -9,8 +9,8 @@ plot_lfc(
   genes,
   gene_id = "ensembl_gene_id",
   pretty_gene_id = "gene_symbol",
-  test_cond = "test cond.",
   ref_cond = "ref cond.",
+  test_cond = "test cond.",
   key_genes = NULL,
   key_genes_name = "leading edge",
   title = NULL,
@@ -29,9 +29,9 @@ plot_lfc(
 
 \item{pretty_gene_id}{character vector of length 1 representing alternative gene ID to use for display. Must be a column name of input.}
 
-\item{test_cond}{character vector of length 1 representing the test biological condition.}
-
 \item{ref_cond}{character vector of length 1 representing the reference biological condition.}
+
+\item{test_cond}{character vector of length 1 representing the test biological condition.}
 
 \item{key_genes}{character vector of gene IDs representing key genes among genes. Must be of the gene ID type specified in gene_id.}
 
@@ -66,8 +66,8 @@ plot_lfc(input = deseq2_results_ex,
          genes = genes,
          gene_id = "ensembl_gene_id",
          pretty_gene_id = "gene_symbol",
-         test_cond = "treated",
          ref_cond = "untreated",
+         test_cond = "treated",
          desc_lfc = FALSE,
          xintercepts = seq(0.5, 2, 0.5),
          padj_lab = TRUE,

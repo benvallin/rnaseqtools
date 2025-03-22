@@ -4,12 +4,12 @@
 \alias{search_genes_in_leading_edges}
 \title{Search genes in leading edges}
 \usage{
-search_genes_in_leading_edges(input, gene_ids, group_name = "searched")
+search_genes_in_leading_edges(input, genes, group_name = "searched")
 }
 \arguments{
-\item{input}{data.frame or tibble with leadingEdge list-column and n_leadingEdge column, as produced by rnaseqtools::multi_fgsea.}
+\item{input}{data.frame or tibble with columns collection and n_leadingEdge and list-column leadingEdge, as produced by rnaseqtools::multi_fgsea.}
 
-\item{gene_ids}{character vector of gene IDs to search in leading edges. Must be the same type of gene IDs as in the leadingEdge list-column.}
+\item{genes}{character vector of gene IDs to search in leading edges. Must be the same type of gene IDs as in the leadingEdge list-column.}
 
 \item{group_name}{character vector of length 1 representing group name for the searched genes.}
 }
@@ -26,7 +26,7 @@ genes <- get_leading_edge(input = multi_fgsea_results_ex,
 
 # Search genes representing KEGG_RIBOSOME leading edge in all leading edges
 search_results <- search_genes_in_leading_edges(input = multi_fgsea_results_ex,
-                                                gene_ids = genes,
+                                                genes = genes,
                                                 group_name = "ribosome")
 
 }

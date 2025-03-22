@@ -1,7 +1,7 @@
 #' Search genes in leading edges
 #'
-#' @param input data.frame or tibble with leadingEdge list-column and n_leadingEdge column, as produced by rnaseqtools::multi_fgsea.
-#' @param gene_ids character vector of gene IDs to search in leading edges. Must be the same type of gene IDs as in the leadingEdge list-column.
+#' @param input data.frame or tibble with columns collection and n_leadingEdge and list-column leadingEdge, as produced by rnaseqtools::multi_fgsea.
+#' @param genes character vector of gene IDs to search in leading edges. Must be the same type of gene IDs as in the leadingEdge list-column.
 #' @param group_name character vector of length 1 representing group name for the searched genes.
 #'
 #' @return the input table augmented with gene search results.
@@ -14,22 +14,22 @@
 #'
 #' # Search genes representing KEGG_RIBOSOME leading edge in all leading edges
 #' search_results <- search_genes_in_leading_edges(input = multi_fgsea_results_ex,
-#'                                                 gene_ids = genes,
+#'                                                 genes = genes,
 #'                                                 group_name = "ribosome")
 #'
 search_genes_in_leading_edges <- function(input,
-                                          gene_ids,
+                                          genes,
                                           group_name = "searched") {
 
   if(!is.data.frame(input) ||
-     !all(c("leadingEdge", "n_leadingEdge") %in% colnames(input)) ||
+     !all(c("collection", "leadingEdge", "n_leadingEdge") %in% colnames(input)) ||
      !is.list(input[["leadingEdge"]])) {
-    stop("Input must be a data.frame or tibble with leadingEdge list-column and n_leadingEdge column.",
+    stop("Input must be a data.frame or tibble with columns collection and n_leadingEdge and list-column leadingEdge.",
          call. = F)
   }
 
-  if(!is.character(gene_ids)) {
-    stop("Invalid gene_ids argument.",
+  if(!is.character(genes)) {
+    stop("Invalid genes argument.",
          call. = F)
   }
 
@@ -41,7 +41,7 @@ search_genes_in_leading_edges <- function(input,
 
   output <- input %>%
     dplyr::mutate(leadingEdge_searched = purrr::map(.x = .data$leadingEdge,
-                                                    .f = ~ intersect(.x, gene_ids)),
+                                                    .f = ~ intersect(.x, genes)),
                   n_leadingEdge_searched = purrr::map_int(.x = .data$leadingEdge_searched,
                                                           .f = ~ length(.x)),
                   n_leadingEdge_searched_over_leadingEdge = paste0(.data$n_leadingEdge_searched, " / ", .data$n_leadingEdge),
@@ -60,7 +60,7 @@ search_genes_in_leading_edges <- function(input,
                         .f = ~ .x == 0L))) {
 
     warning("None of the gene IDs were found in the leading edges!\n",
-            "Check that gene_ids and input's leadingEdge are the same type of gene ID.\n",
+            "Check that genes and input's leadingEdge are the same type of gene ID.\n",
             call. = F, immediate. = T)
 
   }

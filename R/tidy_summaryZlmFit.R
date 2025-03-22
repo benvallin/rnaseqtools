@@ -50,7 +50,7 @@ tidy_summaryZlmFit <- function(input, coef, level = 0.95, gene_id = "ensembl_gen
                                         c("primerid", "Pr(>Chisq)")],
                              y = output[output$contrast == coef & output$component == "logFC",
                                         c("primerid", "coef", "ci.hi", "ci.lo")],
-                             by = dplyr::join_by("primerid"))
+                             by = "primerid")
 
   output[["log2FoldChange"]] <- output[["coef"]] / log(x = 2, base = exp(1))
 

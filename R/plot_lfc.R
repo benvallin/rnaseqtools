@@ -4,8 +4,8 @@
 #' @param genes character vector of gene IDs for which log2 fold changes should be displayed. Must be of the gene ID type specified in gene_id.
 #' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
 #' @param pretty_gene_id character vector of length 1 representing alternative gene ID to use for display. Must be a column name of input.
-#' @param test_cond character vector of length 1 representing the test biological condition.
 #' @param ref_cond character vector of length 1 representing the reference biological condition.
+#' @param test_cond character vector of length 1 representing the test biological condition.
 #' @param key_genes character vector of gene IDs representing key genes among genes. Must be of the gene ID type specified in gene_id.
 #' @param key_genes_name character vector of length 1 representing the name of the key genes group.
 #' @param title character vector of length 1 representing plot title.
@@ -30,8 +30,8 @@
 #'          genes = genes,
 #'          gene_id = "ensembl_gene_id",
 #'          pretty_gene_id = "gene_symbol",
-#'          test_cond = "treated",
 #'          ref_cond = "untreated",
+#'          test_cond = "treated",
 #'          desc_lfc = FALSE,
 #'          xintercepts = seq(0.5, 2, 0.5),
 #'          padj_lab = TRUE,
@@ -41,8 +41,8 @@ plot_lfc <- function(input,
                      genes,
                      gene_id = "ensembl_gene_id",
                      pretty_gene_id = "gene_symbol",
-                     test_cond = "test cond.",
                      ref_cond = "ref cond.",
+                     test_cond = "test cond.",
                      key_genes = NULL,
                      key_genes_name = "leading edge",
                      title = NULL,
