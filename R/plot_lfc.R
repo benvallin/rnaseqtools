@@ -52,21 +52,19 @@ plot_lfc <- function(input,
                      lab_nudge = 0.02) {
 
   if(!is.character(gene_id) ||
-     length(gene_id) != 1L ||
-     !gene_id %in% colnames(input)) {
+     length(gene_id) != 1L) {
     stop("Invalid gene_id argument.",
          call. = F)
   }
 
   if(!is.character(pretty_gene_id) ||
-     length(pretty_gene_id) != 1L ||
-     !pretty_gene_id %in% colnames(input)) {
+     length(pretty_gene_id) != 1L) {
     stop("Invalid pretty_gene_id argument.",
          call. = F)
   }
 
   if(!is.data.frame(input) ||
-     !all(c("log2FoldChange", "lfcSE", "padj") %in% colnames(input)) ||
+     !all(c(gene_id, pretty_gene_id, "log2FoldChange", "lfcSE", "padj") %in% colnames(input)) ||
      !is.character(input[[gene_id]]) ||
      !is.character(input[[pretty_gene_id]]) ||
      !is.double(input$log2FoldChange) ||
