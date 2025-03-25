@@ -8,14 +8,23 @@ raw_data_dir_path <- "inst/extdata/"
 # Path to output directory for persistent user data
 persistent_data_dir_path <- tools::R_user_dir(package = "rnaseqtools", which = "data")
 
-# Path to sample metadata file (rds)
-sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/cell_clustering/tidy_sample_metadata_filtered_cells/sample_metadata.rds"
-
 # Path to Salmon's meta_info file (json)
 salmon_meta_info_path <- "/scratch/ben/rnaseq/seq_data/ben/coculture_div67/gencode_v46/04_salmon_quant/Sample_2_S36_L003_CGTAGAACCTTGAGTT/aux_info/meta_info.json"
 
-# Path to log2 COUNT+1 matrix file (csv)
-log2_tpm1p_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2.csv"
+# Path to transcript metadata file (csv)
+transcript_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/feature_metadata/transcript_metadata.csv"
+
+# Path to bulk RNA-seq sample metadata file (rds)
+bulk_sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/pff_bulk/gencode_v46/output/make_sample_metadata/sample_metadata.rds"
+
+# Path to bulk RNA-seq TPM matrix file (csv)
+bulk_tpm_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_tpm_lengthScaledTPM_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2.csv"
+
+# Path to scRNA-seq sample metadata file (rds)
+sc_sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/cell_clustering/tidy_sample_metadata_filtered_cells/sample_metadata.rds"
+
+# Path to scRNA-seq log2(TPM+1) matrix file (csv)
+sc_log2_tpm1p_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2.csv"
 
 # Path to MAST ZlmFit file (rds)
 mast_ZlmFit_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_glmer_zlm_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2_model_formula~_n_gene_on_+_exposure_+_(1_|_line_name)_padj0.05.rds"
@@ -25,9 +34,6 @@ deseq2_DESeqResults_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output
 
 # Path to directory containing Salmon quant files
 salmon_quant_dir_path <- "/scratch/ben/rnaseq/seq_data/ben/coculture_div67/gencode_v46/05_salmon_splici_quant/"
-
-# Path to transcript metadata file (csv)
-transcript_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/feature_metadata/transcript_metadata.csv"
 
 # Path to splici metadata file (tsv)
 splici_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.tx2gene_expanded.tsv"
@@ -86,10 +92,47 @@ file.copy(from = salmon_meta_info_path,
           to = paste0(raw_data_dir_path, "meta_info_ex.json"),
           overwrite = T)
 
-# Counts ------------------------------------------------------------------
+# Bulk RNA-seq data -------------------------------------------------------
+
+# Sample metadata
+bulk_sample_metadata <- read_rds(file = bulk_sample_metadata_path)
+
+bulk_sample_metadata <- bulk_sample_metadata %>%
+  filter(treatment == "NT", genotype %in% c("CTRL", "TRIP")) %>%
+  mutate(donor_id = paste0("donor", seq(6)),
+         disease_status = ifelse(genotype == "CTRL", "healthy", "diseased"),
+         files = setNames(paste0("/scratch/ben/rnaseq/", files), donor_id))
+
+bulk_sample_metadata_ex <- bulk_sample_metadata %>%
+  dplyr::select(donor_id, disease_status)
+
+use_data(bulk_sample_metadata_ex, overwrite = T)
+
+# Import transcript metadata
+transcript_metadata <- read_csv(transcript_metadata_path)
+
+# Import counts from salmon output
+txi <- tximport::tximport(files = bulk_sample_metadata$files,
+                          type = "salmon",
+                          txOut = FALSE,
+                          countsFromAbundance = "no",
+                          tx2gene = transcript_metadata)
+
+# TPM matrix
+bulk_tpm_ex <- txi$abundance
+
+# Filter out low TPM genes
+bulk_tpm_ex <- bulk_tpm_ex[rowSums(bulk_tpm_ex >= 10) >= 3,]
+
+# Rename samples
+rownames(bulk_tpm_ex) <- str_replace(rownames(bulk_tpm_ex), "\\.\\d+$", "")
+
+use_data(bulk_tpm_ex, compress = "xz", overwrite = T)
+
+# scRNA-seq data ----------------------------------------------------------
 
 # log2(TPM+1) matrix
-log2_tpm1p_ex <- data.table::fread(input = log2_tpm1p_path) %>%
+sc_log2_tpm1p_ex <- data.table::fread(input = sc_log2_tpm1p_path) %>%
   left_join(gene_metadata_ex[, c("ensembl_gene_id_version", "ensembl_gene_id")],
             by = join_by(ensembl_gene_id_version)) %>%
   filter(!is.na(ensembl_gene_id)) %>%
@@ -97,21 +140,17 @@ log2_tpm1p_ex <- data.table::fread(input = log2_tpm1p_path) %>%
   column_to_rownames(var = "ensembl_gene_id") %>%
   as.matrix()
 
-keep <- names(head(x = sort(x = rowMeans(log2_tpm1p_ex), decreasing = T), n = 500L))
+keep <- names(head(x = sort(x = rowMeans(sc_log2_tpm1p_ex), decreasing = T), n = 500L))
 
-log2_tpm1p_ex <- log2_tpm1p_ex[keep,]
+sc_log2_tpm1p_ex <- sc_log2_tpm1p_ex[keep,]
 
-# log2_tpm1p_ex <- Matrix::Matrix(log2_tpm1p_ex, sparse = TRUE)
-
-use_data(log2_tpm1p_ex, compress = "xz", overwrite = T)
-
-# Samples -----------------------------------------------------------------
+use_data(sc_log2_tpm1p_ex, compress = "xz", overwrite = T)
 
 # Sample metadata
-sample_metadata_ex <- read_rds(file = sample_metadata_path)
+sc_sample_metadata_ex <- read_rds(file = sc_sample_metadata_path)
 
-sample_metadata_ex <- sample_metadata_ex[match(x = colnames(log2_tpm1p_ex),
-                                               table = sample_metadata_ex$barcode),] %>%
+sc_sample_metadata_ex <- sc_sample_metadata_ex[match(x = colnames(sc_log2_tpm1p_ex),
+                                                     table = sc_sample_metadata_ex$barcode),] %>%
   select(barcode, donor_id = line_name, treatment = exposure) %>%
   mutate(donor_id = case_when(donor_id == "B856" ~ "donor1",
                               donor_id == "B156" ~ "donor2",
@@ -123,7 +162,7 @@ sample_metadata_ex <- sample_metadata_ex[match(x = colnames(log2_tpm1p_ex),
                                T ~ NA_character_) %>%
            fct_relevel(c("untreated", "treated")))
 
-use_data(sample_metadata_ex, overwrite = T)
+use_data(sc_sample_metadata_ex, overwrite = T)
 
 # MAST --------------------------------------------------------------------
 
@@ -202,7 +241,7 @@ use_data(deseq2_results_ex, overwrite = T)
 
 # Multi fgsea results
 multi_fgsea_results_ex <- multi_fgsea(input = get_msigdb_collections(),
-                                      collections = c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP"),
+                                      collections = c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG_LEGACY", "MSigDB_C5_GO:BP"),
                                       stats = deseq2_results_ex %>%
                                         dplyr::arrange(dplyr::desc(sign_log2fc_times_minus_log10pvalue)) %>%
                                         dplyr::pull(sign_log2fc_times_minus_log10pvalue, ensembl_gene_id),
@@ -216,7 +255,7 @@ use_data(multi_fgsea_results_ex, overwrite = T)
 
 # Multi fora results
 multi_fora_results_ex <- multi_fora(input = get_msigdb_collections(),
-                                    collections = c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP"),
+                                    collections = c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG_LEGACY", "MSigDB_C5_GO:BP"),
                                     genes = mast_results_ex %>%
                                       dplyr::filter(log2FoldChange < 0,
                                                     padj < 0.05) %>%
@@ -232,11 +271,11 @@ use_data(multi_fora_results_ex, overwrite = T)
 # splici ------------------------------------------------------------------
 
 # Import sample metadata
-sample_metadata <- read_rds(file = sample_metadata_path)
+sc_sample_metadata <- read_rds(file = sc_sample_metadata_path)
 
-sample_metadata <- sample_metadata[101:105, c("barcode", "barcode_spe_dirs")]
+sc_sample_metadata <- sc_sample_metadata[101:105, c("barcode", "barcode_spe_dirs")]
 
-sample_metadata <- sample_metadata %>%
+sc_sample_metadata <- sc_sample_metadata %>%
   mutate(files = setNames(object = map_chr(.x = barcode_spe_dirs,
                                            .f = ~ list.files(path = paste0(salmon_quant_dir_path, .x),
                                                              pattern = "quant.sf",
@@ -283,7 +322,7 @@ split_df_ex <- split_df_ex[split_df_ex$spliced %in% keep,]
 use_data(split_df_ex, overwrite = T)
 
 # Construct txi
-txi_ex <- tximport::tximport(files = sample_metadata$files,
+txi_ex <- tximport::tximport(files = sc_sample_metadata$files,
                              type = "salmon",
                              txOut = FALSE,
                              countsFromAbundance = "no",

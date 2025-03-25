@@ -4,10 +4,13 @@
 \alias{list_msigdb_collections}
 \title{List MSigDB collections}
 \usage{
-list_msigdb_collections()
+list_msigdb_collections(db_species = "Hs")
+}
+\arguments{
+\item{db_species}{character vector of length 1 representing species abbreviation for database query. Must be "Hs" or "HS" for human and "Mm" or "MM" for mouse databases.}
 }
 \value{
-a tibble summarizing available MSigDB collections with columns collection_name, gs_cat and gs_subcat.
+a tibble summarizing available MSigDB collections.
 }
 \description{
 List MSigDB collections

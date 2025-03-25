@@ -1,7 +1,8 @@
 #' Get MSigDB collections
 #'
-#' @param species character vector of length 1 representing species. Must be a species_name returned by msigdbr::msigdbr_species.
-#' @param msigdb_collection_summary data.frame or tibble with columns collection_name, gs_cat and gs_subcat as returned by list_msigdb_collections.
+#' @param species character vector of length 1 representing species for output genes. Must be a species_name returned by msigdbr::msigdbr_species.
+#' @param db_species character vector of length 1 representing species abbreviation for database query. Must be "Hs" or "HS" for human and "Mm" or "MM" for mouse databases.
+#' @param msigdb_collection_summary data.frame or tibble with columns collection_id, gs_collection and gs_subcollection as returned by rnaseqtools::list_msigdb_collections.
 #'
 #' @return a tibble with ensembl_gene_id column and collections list-columns. Each collection contains columns set_id and set_name.
 #' @export
@@ -10,7 +11,8 @@
 #' msigdb_collection_table = get_msigdb_collections()
 #'
 get_msigdb_collections <- function(species = "Homo sapiens",
-                                   msigdb_collection_summary = list_msigdb_collections()) {
+                                   db_species = "Hs",
+                                   msigdb_collection_summary = list_msigdb_collections(db_species = "Hs")) {
 
   if(!requireNamespace("msigdbr", quietly = TRUE)) {
     stop("Package \"msigdbr\" must be installed to use this function.",
@@ -27,8 +29,15 @@ get_msigdb_collections <- function(species = "Homo sapiens",
          call. = F)
   }
 
+  if(!is.character(db_species) ||
+     length(db_species) != 1L ||
+     !db_species %in% c("HS", "Hs", "MM", "Mm")) {
+    stop("Invalid db_species argument.",
+         call. = F)
+  }
+
   if(!is.data.frame(msigdb_collection_summary) ||
-     !all(c("collection_name", "gs_cat", "gs_subcat") %in% colnames(msigdb_collection_summary))) {
+     !all(c("collection_id", "gs_collection", "gs_subcollection") %in% colnames(msigdb_collection_summary))) {
     stop("Invalid msigdb_collection_summary argument.",
          call. = F)
   }
@@ -41,19 +50,19 @@ get_msigdb_collections <- function(species = "Homo sapiens",
   output <- lapply(X = collections,
                    FUN = function(x) {
 
-                     collection_name <- x$collection_name
+                     collection_id <- x$collection_id
 
-                     category <- x$gs_cat
+                     collection <- x$gs_collection
 
-                     if(is.na(x$gs_subcat)) {
-                       subcategory <- NULL
+                     if(x$gs_subcollection == "") {
+                       subcollection <- NULL
                      } else {
-                       subcategory <- x$gs_subcat
+                       subcollection <- x$gs_subcollection
                      }
 
                      temp <- msigdbr::msigdbr(species = species,
-                                              category = category,
-                                              subcategory = subcategory)
+                                              collection = collection,
+                                              subcollection = subcollection)
 
                      temp <- temp[, c("ensembl_gene", "gs_id", "gs_name")]
 
@@ -63,7 +72,7 @@ get_msigdb_collections <- function(species = "Homo sapiens",
 
                      temp <- tidyr::nest(.data = temp,
                                          .by = "ensembl_gene_id",
-                                         .key = collection_name)
+                                         .key = collection_id)
 
                    })
 

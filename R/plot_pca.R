@@ -14,12 +14,12 @@
 #'
 #' @examples
 #' # Run PCA
-#' pca_results <- run_pca(input = log2_tpm1p_ex,
+#' pca_results <- run_pca(input = sc_log2_tpm1p_ex,
 #'                        pcs = 1:10)
 #'
 #' # Join sample metadata to PCA results
 #' pca_results <- pca_results %>%
-#'   dplyr::left_join(sample_metadata_ex,
+#'   dplyr::left_join(sc_sample_metadata_ex,
 #'                    by = dplyr::join_by(barcode))
 #'
 #' # Plot PC1 against PC2

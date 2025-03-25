@@ -46,7 +46,10 @@ Run fgsea::fora on multiple collections
 msigdb_collection_table = get_msigdb_collections()
 
 # Define collections of interest
-collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+collection_names <- c("MSigDB_H",
+                      "MSigDB_C2_CP:REACTOME",
+                      "MSigDB_C2_CP:KEGG_LEGACY",
+                      "MSigDB_C5_GO:BP")
 
 # Extract genes significantly downregulated (log2FoldChange < 0 and padj < 0.05) from MAST results
 genes <- mast_results_ex \%>\%

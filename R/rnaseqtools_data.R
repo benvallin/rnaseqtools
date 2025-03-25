@@ -13,12 +13,42 @@
 #' }
 "gene_metadata_ex"
 
-#' log2(TPM+1) matrix
+#' Bulk RNA-seq sample metadata
+#'
+#' Example sample metadata table matching the TPM matrix.
+#'
+#' @format A tibble with 6 rows and 2 variables:
+#' \describe{
+#'   \item{donor_id}{donor IDs matching the column names of the TPM matrix (donor1 to donor6)}
+#'   \item{treatment}{disease status (healthy or diseased)}
+#' }
+"bulk_sample_metadata_ex"
+
+#' Bulk-seq TPM matrix
+#'
+#' Example TPM matrix with column and row names representing donor IDs and ensembl gene IDs, respectively.
+#' The matrix has 10073 rows and 6 columns.
+#'
+"bulk_tpm_ex"
+
+#' scRNA-seq sample metadata
+#'
+#' Example sample metadata table matching the log2(TPM+1) matrix.
+#'
+#' @format A tibble with 547 rows and 3 variables:
+#' \describe{
+#'   \item{barcode}{cell barcodes matching the column names of the log2(TPM+1) matrix}
+#'   \item{donor_id}{donor ID (donor1, donor2 or donor3)}
+#'   \item{treatment}{treatment status (untreated or treated)}
+#' }
+"sc_sample_metadata_ex"
+
+#' scRNA-seq log2(TPM+1) matrix
 #'
 #' Example log2(TPM+1) matrix with column and row names representing cell barcodes and ensembl gene IDs, respectively.
 #' The matrix has 500 rows and 547 columns.
 #'
-"log2_tpm1p_ex"
+"sc_log2_tpm1p_ex"
 
 #' MAST summaryZlmFit
 #'
@@ -75,18 +105,6 @@
 #' }
 "deseq2_results_ex"
 
-#' Sample metadata
-#'
-#' Example sample metadata table matching the log2(TPM+1) matrix.
-#'
-#' @format A tibble with 547 rows and 3 variables:
-#' \describe{
-#'   \item{barcode}{cell barcodes matching the column names of the log2(TPM+1) matrix}
-#'   \item{donor_id}{donor ID (donor1, donor2 or donor3)}
-#'   \item{treatment}{treatment status (untreated or treated)}
-#' }
-"sample_metadata_ex"
-
 #' Multi fgsea results
 #'
 #' Example results table produced by rnaseqtools::multi_fgsea.
@@ -133,7 +151,6 @@
 #' To generate reference files for spliced and unspliced abundance estimation with alignment-free methods, see the worflow described at:
 #' \url{https://bioconductor.org/packages/release/bioc/vignettes/eisaR/inst/doc/rna-velocity.html}.
 #'
-
 "txi_ex"
 
 #' Split dataframe

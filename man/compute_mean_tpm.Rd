@@ -6,7 +6,7 @@
 \usage{
 compute_mean_tpm(
   input,
-  gene_id = "ensembl_gene_id_version",
+  gene_id = "ensembl_gene_id",
   sample_metadata,
   sample_id_var,
   group_id_var,
@@ -28,13 +28,35 @@ compute_mean_tpm(
 
 \item{ref_gene_ids}{named character vector of gene IDs to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.}
 
-\item{gene_groups}{list of named character vectors representing gene groups to use as reference.}
+\item{gene_groups}{list of named character vectors of gene IDs representing gene groups to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.}
 
-\item{cnt_nm}{ss}
+\item{cnt_nm}{character vector of length 1 representing the count name to use in output.}
 }
 \value{
-ss
+a tibble with transcript counts averaged by biological group ID.
+The mean abundance of each transcript is also expressed as a percentage of the summed abundance of all transcripts.
+The expression quartile a gene falls in is indicated by a label ranging from Q1 to Q4 which represent the 25\% least and 25\% most expressed genes among all the detected genes, respectively.
 }
 \description{
 Compute mean TPMs
+}
+\examples{
+# Convert TPM matrix to tibble with gene IDs as column
+tpm_df <- tibble::as_tibble(x = bulk_tpm_ex, rownames = "ensembl_gene_id")
+
+# Define reference genes
+ref_gene_ids <- gene_metadata_ex \%>\%
+  dplyr::filter(gene_symbol \%in\% c("ACTB", "GAPDH")) \%>\%
+  dplyr::pull(ensembl_gene_id, gene_symbol)
+
+# Compute mean TPMs per treatment status
+mean_tpm <- compute_mean_tpm(input = tpm_df,
+                             gene_id = "ensembl_gene_id",
+                             sample_metadata = bulk_sample_metadata_ex,
+                             sample_id_var = "donor_id",
+                             group_id_var = "disease_status",
+                             ref_gene_ids = ref_gene_ids,
+                             gene_groups = NULL,
+                             cnt_nm = "tpm")
+
 }

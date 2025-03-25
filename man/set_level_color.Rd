@@ -23,7 +23,7 @@ Set factor levels color
 }
 \examples{
 # Set donor_id as factor and assign color levels
-sample_metadata <- set_level_color(input = sample_metadata_ex,
+sample_metadata <- set_level_color(input = sc_sample_metadata_ex,
                                    variable = "donor_id",
                                    levels = c("donor3", "donor2", "donor1"),
                                    colors = c("#0077b6", "#a4133c", "#29a655"))

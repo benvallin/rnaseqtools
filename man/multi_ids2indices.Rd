@@ -26,10 +26,13 @@ Convert gene identifiers to indices for gene sets - multiple collections
 msigdb_collection_table = get_msigdb_collections()
 
 # Define collections of interest
-collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+collection_names <- c("MSigDB_H",
+                      "MSigDB_C2_CP:REACTOME",
+                      "MSigDB_C2_CP:KEGG_LEGACY",
+                      "MSigDB_C5_GO:BP")
 
 # Extract gene identifiers from log2 COUNT+1 matrix
-identifiers <- rownames(log2_tpm1p_ex)
+identifiers <- rownames(sc_log2_tpm1p_ex)
 
 # Get lists of indices for selected collections
 collections <- multi_ids2indices(input = msigdb_collection_table,

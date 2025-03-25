@@ -43,7 +43,10 @@ Run fgsea::fgsea on multiple collections
 msigdb_collection_table = get_msigdb_collections()
 
 # Define collections of interest
-collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+collection_names <- c("MSigDB_H",
+                      "MSigDB_C2_CP:REACTOME",
+                      "MSigDB_C2_CP:KEGG_LEGACY",
+                      "MSigDB_C5_GO:BP")
 
 # Extract gene ranking metric from DESeq2 results
 stats <- deseq2_results_ex \%>\%

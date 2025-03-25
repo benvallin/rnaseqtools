@@ -11,9 +11,8 @@
 #' @export
 #'
 #' @examples
-#'
 #' # Run PCA
-#' pca_results <- run_pca(input = log2_tpm1p_ex,
+#' pca_results <- run_pca(input = sc_log2_tpm1p_ex,
 #'                        pcs = 1:10)
 #'
 run_pca <- function(input,

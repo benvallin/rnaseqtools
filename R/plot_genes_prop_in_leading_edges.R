@@ -15,7 +15,7 @@
 #' msigdb_collection_table = get_msigdb_collections()
 #'
 #' # Define collection of interest
-#' collection_name <- "MSigDB_C2_CP:KEGG"
+#' collection_name <- "MSigDB_C2_CP:KEGG_LEGACY"
 #'
 #' # Define gene set name of interest
 #' set_name <- "KEGG_RIBOSOME"
@@ -34,7 +34,7 @@
 #'                                  x_lab = "gene set",
 #'                                  gene_group_name = set_name,
 #'                                  collection_levels = c("MSigDB_C2_CP:REACTOME",
-#'                                                        "MSigDB_C2_CP:KEGG",
+#'                                                        "MSigDB_C2_CP:KEGG_LEGACY",
 #'                                                        "MSigDB_C5_GO:BP"),
 #'                                  collection_colors = c("#5d76cb",
 #'                                                        "#29a655",

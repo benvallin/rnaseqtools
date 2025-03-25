@@ -20,17 +20,20 @@
 #' msigdb_collection_table = get_msigdb_collections()
 #'
 #' # Define collections of interest
-#' collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+#' collection_names <- c("MSigDB_H",
+#'                       "MSigDB_C2_CP:REACTOME",
+#'                       "MSigDB_C2_CP:KEGG_LEGACY",
+#'                       "MSigDB_C5_GO:BP")
 #'
 #' # Define design matrix
 #' model_formula <- "~ treatment + donor_id"
 #'
-#' design <- model.matrix(object = formula(model_formula), data = sample_metadata_ex)
+#' design <- model.matrix(object = formula(model_formula), data = sc_sample_metadata_ex)
 #'
 #' design <- design[, which(colSums(design) != 0), drop = FALSE]
 #'
 #' # Run limma::fry on selected collections
-#' fry_results <- multi_limma_rgst(y = log2_tpm1p_ex,
+#' fry_results <- multi_limma_rgst(y = sc_log2_tpm1p_ex,
 #'                                 input = msigdb_collection_table,
 #'                                 collections = collection_names,
 #'                                 design = design,

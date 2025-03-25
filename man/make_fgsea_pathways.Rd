@@ -24,7 +24,10 @@ Make fgsea pathways
 msigdb_collection_table = get_msigdb_collections()
 
 # Define collections of interest
-collection_names <- c("MSigDB_H", "MSigDB_C2_CP:REACTOME", "MSigDB_C2_CP:KEGG", "MSigDB_C5_GO:BP")
+collection_names <- c("MSigDB_H",
+                      "MSigDB_C2_CP:REACTOME",
+                      "MSigDB_C2_CP:KEGG_LEGACY",
+                      "MSigDB_C5_GO:BP")
 
 # Make fgsea pathways
 collections <- make_fgsea_pathways(input = msigdb_collection_table,
