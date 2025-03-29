@@ -153,7 +153,7 @@ compute_mean_tpm <- function(input,
                                        df$mean_tpm > q[["75%"]] ~ "Q4",
                                        df$mean_tpm > q[["50%"]] ~ "Q3",
                                        df$mean_tpm > q[["25%"]] ~ "Q2",
-                                       df$mean_tpm > q[["0%"]] ~ "Q1",
+                                       df$mean_tpm >= q[["0%"]] ~ "Q1",
                                        T ~ "not detected"
                                      )
 
@@ -215,7 +215,7 @@ compute_mean_tpm <- function(input,
                                            df$mean_tpm > q[["75%"]] ~ "Q4",
                                            df$mean_tpm > q[["50%"]] ~ "Q3",
                                            df$mean_tpm > q[["25%"]] ~ "Q2",
-                                           df$mean_tpm > q[["0%"]] ~ "Q1",
+                                           df$mean_tpm >= q[["0%"]] ~ "Q1",
                                            T ~ "not detected"
                                          )
 
@@ -228,10 +228,10 @@ compute_mean_tpm <- function(input,
   output <- tidyr::unnest(data = output,
                           cols = tidyselect::all_of("group_data"))
 
-  output <- tidyr::unnest(data = output,
-                          cols = tidyselect::all_of("sample_data"))
-
   if(cnt_nm != "tpm") {
+
+    output <- tidyr::unnest(data = output,
+                            cols = tidyselect::all_of("sample_data"))
 
     output <- dplyr::rename_with(.data = output,
                                  .fn = function(x) gsub(pattern = "tpm", replacement = cnt_nm, x = x),
@@ -246,9 +246,12 @@ compute_mean_tpm <- function(input,
                                                 x = colnames(output),
                                                 value = TRUE)))
 
+    output <- tidyr::nest(.data = output,
+                          sample_data = tidyselect::all_of(c(sample_id_var, cnt_nm)))
+
   }
 
   dplyr::select(.data = output,
-                group_id_var, sample_id_var, gene_id, tidyselect::everything())
+                group_id_var, gene_id, sample_data, tidyselect::everything())
 
 }
