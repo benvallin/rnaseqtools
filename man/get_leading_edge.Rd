@@ -20,6 +20,6 @@ Get leading edge
 \examples{
 # Get genes in leading edge
 leading_edge <- get_leading_edge(input = multi_fgsea_results_ex,
-                                 set_name = "REACTOME_PHOSPHOLIPID_METABOLISM")
+                                 set_name = "REACTOME_TRANSLATION")
 
 }

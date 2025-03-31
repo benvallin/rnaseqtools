@@ -49,7 +49,7 @@ ref_gene_ids <- gene_metadata_ex \%>\%
   dplyr::filter(gene_symbol \%in\% c("ACTB", "GAPDH")) \%>\%
   dplyr::pull(ensembl_gene_id, gene_symbol)
 
-# Compute mean TPMs per treatment status
+# Compute mean TPMs per disease status
 mean_tpm <- compute_mean_tpm(input = tpm_df,
                              gene_id = "ensembl_gene_id",
                              sample_metadata = bulk_sample_metadata_ex,

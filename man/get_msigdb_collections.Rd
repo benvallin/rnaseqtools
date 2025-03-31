@@ -4,18 +4,12 @@
 \alias{get_msigdb_collections}
 \title{Get MSigDB collections}
 \usage{
-get_msigdb_collections(
-  species = "Homo sapiens",
-  db_species = "Hs",
-  msigdb_collection_summary = list_msigdb_collections(db_species = "Hs")
-)
+get_msigdb_collections(species = "Homo sapiens", db_species = "Hs")
 }
 \arguments{
 \item{species}{character vector of length 1 representing species for output genes. Must be a species_name returned by msigdbr::msigdbr_species.}
 
 \item{db_species}{character vector of length 1 representing species abbreviation for database query. Must be "Hs" or "HS" for human and "Mm" or "MM" for mouse databases.}
-
-\item{msigdb_collection_summary}{data.frame or tibble with columns collection_id, gs_collection and gs_subcollection as returned by rnaseqtools::list_msigdb_collections.}
 }
 \value{
 a tibble with ensembl_gene_id column and collections list-columns. Each collection contains columns set_id and set_name.

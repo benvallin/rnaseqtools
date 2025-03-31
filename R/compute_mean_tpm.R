@@ -23,7 +23,7 @@
 #'   dplyr::filter(gene_symbol %in% c("ACTB", "GAPDH")) %>%
 #'   dplyr::pull(ensembl_gene_id, gene_symbol)
 #'
-#' # Compute mean TPMs per treatment status
+#' # Compute mean TPMs per disease status
 #' mean_tpm <- compute_mean_tpm(input = tpm_df,
 #'                              gene_id = "ensembl_gene_id",
 #'                              sample_metadata = bulk_sample_metadata_ex,
@@ -252,6 +252,6 @@ compute_mean_tpm <- function(input,
   }
 
   dplyr::select(.data = output,
-                group_id_var, gene_id, sample_data, tidyselect::everything())
+                group_id_var, gene_id, "sample_data", tidyselect::everything())
 
 }
