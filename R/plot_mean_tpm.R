@@ -12,6 +12,12 @@ plot_mean_tpm <- function(input,
                           x_label = "mean TPM",
                           cnt_nm = "tpm") {
 
+  gene_id <- substitute(gene_id)
+  gene_id <- ifelse(is.symbol(gene_id), deparse(gene_id), gene_id)
+
+  pretty_gene_id <- substitute(pretty_gene_id)
+  pretty_gene_id <- ifelse(is.symbol(pretty_gene_id), deparse(pretty_gene_id), pretty_gene_id)
+
   if(is.null(facet_var) &&
      (length(input[[gene_id]]) > length(unique(input[[gene_id]])))) {
     stop("Multiple entries for one or more gene ID(s). If that is expected, use the <facet_var> argument.",
@@ -38,55 +44,34 @@ plot_mean_tpm <- function(input,
 
   }
 
-  if(is.null(facet_var) && is.null(color_var)) {
+  aesthetics <- quote(ggplot2::aes(x = .data$mean_tpm,
+                                   y = .data[[pretty_gene_id]]))
 
-    aesthetics <- enquote(ggplot2::aes(x = .data$mean_tpm,
-                                       y = .data[[pretty_gene_id]]))
+  col_layer <- quote(ggplot2::geom_col(width = 0.9, linewidth = 1))
 
-    column_layer <- enquote(ggplot2::geom_col(width = 0.9, linewidth = 1, fill = fill_colors[[1]], color = "black"))
+  if(!is.null(facet_var)) {
 
-  } else if(!is.null(facet_var) && is.null(color_var)) {
-
-    aesthetics <- enquote(ggplot2::aes(x = .data$mean_tpm,
-                                       y = .data[[pretty_gene_id]],
-                                       fill = .data[[facet_var]]))
-
-    column_layer <- enquote(ggplot2::geom_col(width = 0.9, linewidth = 1, color = "black"))
-
-  } else if(is.null(facet_var) && !is.null(color_var)) {
-
-    aesthetics <- enquote(ggplot2::aes(x = .data$mean_tpm,
-                                       y = .data[[pretty_gene_id]],
-                                       color = .data[[color_var]]))
-
-    column_layer <- enquote(ggplot2::geom_col(width = 0.9, linewidth = 1, fill = fill_colors[[1]]))
+    aesthetics[["fill"]] <- quote(.data[[facet_var]])
 
   } else {
 
-    aesthetics <- enquote(ggplot2::aes(x = .data$mean_tpm,
-                                       y = .data[[pretty_gene_id]],
-                                       fill =.data[[facet_var]],
-                                       color = .data[[color_var]]))
-
-    column_layer <- enquote(ggplot2::geom_col(width = 0.9, linewidth = 1))
+    col_layer[["fill"]] <- quote(fill_colors[[1]])
 
   }
 
-  eval(column_params)
+  if(!is.null(color_var)) {
 
-  if(expr_quartile && !is.null(ref_gene)) {
+    aesthetics[["color"]] <- quote(.data[[color_var]])
 
-    lab <- quote(paste0(.data$mean_tpm_quartile, " - % ", ref_gene, ": ",
-                        round(.data[[paste0("mean_tpm_pct_", ref_gene)]], 3)))
+  } else {
 
-  } else if(expr_quartile && is.null(ref_gene)) {
+    col_layer[["color"]] <- quote("black")
 
-    lab <- quote(.data$mean_tpm_quartile)
   }
 
   p <- ggplot2::ggplot(data = df,
                        mapping = eval(aesthetics)) +
-    eval(column_layer) +
+    eval(col_layer) +
     ggplot2::geom_linerange(mapping = ggplot2::aes(xmin = .data$mean_tpm - .data$sem_tpm,
                                                    xmax = .data$mean_tpm + .data$sem_tpm))
 
@@ -96,6 +81,16 @@ plot_mean_tpm <- function(input,
       ggplot2::scale_fill_manual(values = fill_colors) +
       ggplot2::facet_wrap(~ .data[[facet_var]])
 
+  }
+
+  if(expr_quartile && !is.null(ref_gene)) {
+
+    lab <- quote(paste0(.data$mean_tpm_quartile, " - % ", ref_gene, ": ",
+                        round(.data[[paste0("mean_tpm_pct_", ref_gene)]], 3)))
+
+  } else if(expr_quartile && is.null(ref_gene)) {
+
+    lab <- quote(.data$mean_tpm_quartile)
   }
 
   if(exists("lab")) {
