@@ -5,13 +5,13 @@
 \alias{bulk_tpm_ex}
 \title{Bulk-seq TPM matrix}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 10073 rows and 6 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 20010 rows and 6 columns.
 }
 \usage{
 bulk_tpm_ex
 }
 \description{
 Example TPM matrix with column and row names representing donor IDs and ensembl gene IDs, respectively.
-The matrix has 10073 rows and 6 columns.
+The matrix has 20010 rows and 6 columns.
 }
 \keyword{datasets}

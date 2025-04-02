@@ -27,7 +27,7 @@
 #' Bulk-seq TPM matrix
 #'
 #' Example TPM matrix with column and row names representing donor IDs and ensembl gene IDs, respectively.
-#' The matrix has 10073 rows and 6 columns.
+#' The matrix has 20010 rows and 6 columns.
 #'
 "bulk_tpm_ex"
 
@@ -165,3 +165,17 @@
 #'   \item{unspliced}{gene ID for unspliced transcript (e.g.: ENSG00000005486.17-I)}
 #' }
 "split_df_ex"
+
+#' Calcium-related genes
+#'
+#' Table listing genes involved in intracellular calcium handling.
+#'
+#' @format A tibble with 4 columns:
+#' \describe{
+#'   \item{ensembl_gene_id}{ensembl gene ID (e.g.: ENSG00000156026)}
+#'   \item{gene_symbol}{gene symbol (e.g.: MCU)}
+#'   \item{protein_complex}{protein complex (e.g.: mitochondrial calcium uniporter MCU)}
+#'   \item{functional_pathway}{functional pathway (e.g.: mitochondrial calcium uptake))}
+#' }
+"calcium_genes_ex"
+

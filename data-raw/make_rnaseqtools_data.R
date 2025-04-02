@@ -41,6 +41,9 @@ splici_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.
 # Path to spliced - unspliced gene ID correspondence file (tsv)
 split_df_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.features_expanded.tsv"
 
+# Path to Mari's list of target genes (csv)
+mcc_tars_path <- "/scratch/ben/rnaseq/data/mari/input/mari_target_genes2.csv"
+
 # Set up ------------------------------------------------------------------
 
 # Append trailing "/" to directory paths if missing
@@ -121,8 +124,12 @@ txi <- tximport::tximport(files = bulk_sample_metadata$files,
 # TPM matrix
 bulk_tpm_ex <- txi$abundance
 
+# Filter out non protein-coding genes
+bulk_tpm_ex <- bulk_tpm_ex[rownames(bulk_tpm_ex) %in% gene_metadata_ex[gene_metadata_ex$gene_type == "protein_coding",
+                                                                       "ensembl_gene_id_version"][[1]],]
+
 # Filter out low TPM genes
-bulk_tpm_ex <- bulk_tpm_ex[rowSums(bulk_tpm_ex >= 10) >= 3,]
+bulk_tpm_ex <- bulk_tpm_ex[rowSums(bulk_tpm_ex >= 0) >= 3,]
 
 # Rename samples
 rownames(bulk_tpm_ex) <- str_replace(rownames(bulk_tpm_ex), "\\.\\d+$", "")
@@ -329,3 +336,15 @@ txi_ex <- tximport::tximport(files = sc_sample_metadata$files,
                              tx2gene = splici_metadata)
 
 use_data(txi_ex, overwrite = T)
+
+# Calcium genes metadata --------------------------------------------------
+
+calcium_genes_ex <- read_csv(mcc_tars_path)
+
+calcium_genes_ex <- calcium_genes_ex %>%
+  mutate(ensembl_gene_id = str_remove(ensembl_gene_id_version, "\\.\\d+$")) %>%
+  select(ensembl_gene_id, gene_symbol = gene_name, protein_complex, functional_pathway)
+
+use_data(calcium_genes_ex, overwrite = T)
+
+
