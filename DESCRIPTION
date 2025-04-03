@@ -21,6 +21,7 @@ Imports:
     forcats,
     ggplot2,
     ggpubr,
+    ggrepel,
     magrittr,
     matrixStats,
     methods,

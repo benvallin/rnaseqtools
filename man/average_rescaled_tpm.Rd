@@ -14,11 +14,11 @@ average_rescaled_tpm(
 \arguments{
 \item{input}{numeric matrix of rescaled TPMs with gene IDs as rownames and sample IDs as colnames. Typically produced by rnaseqtools::rescale_tpm.}
 
-\item{grp_df}{data.frame or tibble with column sample_id and one or more grouping columns.}
+\item{grp_df}{data.frame or tibble with column <sample_id> and one or more grouping columns.}
 
-\item{sample_id}{character vector of length 1 representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and sample_id column of group_df.}
+\item{sample_id}{character vector of length 1 or name representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and column <sample_id> of grp_df.}
 
-\item{gene_id}{character vector of length 1 representing gene ID. Used to label row names of input.}
+\item{gene_id}{character vector of length 1 or name representing gene ID. Used to label row names of input.}
 }
 \value{
 a matrix with rescaled TPMs averaged by groups.

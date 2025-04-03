@@ -1,9 +1,9 @@
 #' Average rescaled TPMs
 #'
 #' @param input numeric matrix of rescaled TPMs with gene IDs as rownames and sample IDs as colnames. Typically produced by rnaseqtools::rescale_tpm.
-#' @param grp_df data.frame or tibble with column sample_id and one or more grouping columns.
-#' @param sample_id character vector of length 1 representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and column sample_id of group_df.
-#' @param gene_id character vector of length 1 representing gene ID. Used to label row names of input.
+#' @param grp_df data.frame or tibble with column <sample_id> and one or more grouping columns.
+#' @param sample_id character vector of length 1 or name representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and column <sample_id> of grp_df.
+#' @param gene_id character vector of length 1 or name representing gene ID. Used to label row names of input.
 #'
 #' @return a matrix with rescaled TPMs averaged by groups.
 #' @export
@@ -42,6 +42,16 @@ average_rescaled_tpm <- function(input,
          call. = F)
   }
 
+  if(length(unique(rownames(input))) != length(rownames(input))) {
+    stop("Gene IDs in rownames of input are not all unique.",
+         call. = F)
+  }
+
+  if(length(unique(colnames(input))) != length(colnames(input))) {
+    stop("Sample IDs in colnames of input are not all unique.",
+         call. = F)
+  }
+
   if(!all(round(colSums(input)) == 100L)) {
     stop("input is not a matrix of rescaled TPMs: its column sums are not all equal to 100.",
          call. = F)
@@ -60,11 +70,23 @@ average_rescaled_tpm <- function(input,
          call. = F)
   }
 
+  if(length(unique(grp_df[[sample_id]])) != length(grp_df[[sample_id]])) {
+    stop("Sample IDs in column <sample_id> of grp_df are not all unique.",
+         call. = F)
+  }
+
   sample_ids <- intersect(colnames(input),
                           grp_df[[sample_id]])
 
   if(length(sample_ids) == 0L) {
-    stop("None of the sample IDs in column <sample_id> of group_df are present in colnames of input.",
+    stop("None of the sample IDs in column <sample_id> of grp_df are present in colnames of input.",
+         call. = F)
+  }
+
+  if(!is.character(gene_id) ||
+     length(gene_id) != 1L ||
+     is.na(gene_id)) {
+    stop("Invalid gene_id argument.",
          call. = F)
   }
 
@@ -76,14 +98,24 @@ average_rescaled_tpm <- function(input,
          call. = F)
   }
 
-  if(!is.character(gene_id) ||
-     length(gene_id) != 1L ||
-     is.na(gene_id)) {
-    stop("Invalid gene_id argument.",
-         call. = F)
+  if(!all(colnames(input) %in% grp_df[[sample_id]])) {
+    warning("The sample IDs in colnames of input are not all present in the column <sample_id> of grp_df. Those samples will be ommitted.\n",
+            call. = F, immediate. = T)
+  }
+
+  if(!all(grp_df[[sample_id]] %in% colnames(input))) {
+    warning("The sample IDs in the column <sample_id> of grp_df are not all present in colnames of input. Those samples will be ommitted.\n",
+            call. = F, immediate. = T)
   }
 
   message("Grouping by ", paste0(grp_vars, collapse = ", "), " and ", gene_id, " for averaging rescaled TPMs...\n")
+
+  grp_var_nm <- paste0(grp_vars, collapse = "_")
+
+  grp_df[[grp_var_nm]] <- Reduce(f = function(...) paste(..., sep = "_"),
+                                 x = grp_df[, grp_vars])
+
+  grp_df <- grp_df[, c(sample_id, grp_var_nm)]
 
   tibble::as_tibble(input,
                     rownames = gene_id) %>%
@@ -93,7 +125,7 @@ average_rescaled_tpm <- function(input,
                         values_to = "rescaled_tpm") %>%
     dplyr::left_join(grp_df,
                      by = sample_id) %>%
-    dplyr::group_by(dplyr::across(.cols = c(grp_vars, gene_id))) %>%
+    dplyr::group_by(dplyr::across(.cols = c(grp_var_nm, gene_id))) %>%
     dplyr::mutate(mean_rescaled_tpm = mean(.data$rescaled_tpm, na.rm = T),
                   sd_rescaled_tpm = stats::sd(.data$rescaled_tpm, na.rm = T),
                   sem_rescaled_tpm = .data$sd_rescaled_tpm / length(.data[[sample_id]])) %>%
