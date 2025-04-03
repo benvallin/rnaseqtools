@@ -13,10 +13,11 @@
 #' @export
 #'
 #' @examples
+#' ## Case 1: plot rescaled TPMs averaged by groups ##
 #' # Define genes of interest
 #' genes <- calcium_genes_ex %>%
 #'   dplyr::filter(protein_complex == "SERCA") %>%
-#'   dplyr::pull(ensembl_feature_id)
+#'   dplyr::pull(ensembl_gene_id)
 #'
 #' # Rescale TPMs for selected genes
 #' resc_tpm <- rescale_tpm(input = bulk_tpm_ex, genes = genes)
@@ -25,18 +26,47 @@
 #' mean_resc_tpm <- average_rescaled_tpm(input = resc_tpm,
 #'                                       grp_df = bulk_sample_metadata_ex,
 #'                                       sample_id = donor_id,
-#'                                       feature_id = ensembl_feature_id)
+#'                                       gene_id = ensembl_gene_id)
 #'
 #' # Add gene symbols to averaged rescaled TPMs
 #' mean_resc_tpm <- mean_resc_tpm %>%
 #'   dplyr::mutate(disease_status = forcats::fct_relevel(disease_status, c("healthy", "diseased"))) %>%
-#'   dplyr::left_join(gene_metadata_ex[, c("ensembl_feature_id", "gene_symbol")],
-#'                    by = dplyr::join_by(ensembl_feature_id))
+#'   dplyr::left_join(gene_metadata_ex[, c("ensembl_gene_id", "gene_symbol")],
+#'                    by = dplyr::join_by(ensembl_gene_id))
 #'
 #' # Plot averaged rescaled TPMs by disease status
 #' plot_rescaled_tpm(input = mean_resc_tpm,
 #'                   feature_type = "genes",
 #'                   feature_id = gene_symbol,
+#'                   grp_id = disease_status,
+#'                   error_bar = sd,
+#'                   title = "SERCA protein complex")
+#'
+#' ## Case 2: plot rescaled TPMs summed by sample ID and gene set and then averaged by groups ##
+#' # Define gs_df
+#' gs_df <- calcium_genes_ex %>%
+#'   dplyr::select(ensembl_gene_id, protein_complex) %>%
+#'   dplyr::filter(!is.na(protein_complex))
+#'
+#' # Pull genes of interest from gs_df
+#' genes <- gs_df %>%
+#'   dplyr::pull(ensembl_gene_id)
+#'
+#' # Rescale TPMs for selected genes
+#' resc_tpm <- rescale_tpm(input = bulk_tpm_ex, genes = genes)
+#'
+#' # Sum rescaled TPMs by donor ID and protein complex using a gs_df providing gene metadata
+#' # and then average summed rescaled TPMs by disease status using a grp_df providing sample metadata
+#' mean_sum_resc_tpm <- average_sum_rescaled_tpm(input = resc_tpm,
+#'                                               grp_df = bulk_sample_metadata_ex,
+#'                                               gs_df = gs_df,
+#'                                               sample_id = donor_id,
+#'                                               gene_id = ensembl_gene_id)
+#'
+#' # Plot averaged summed rescaled TPMs by disease status
+#' plot_rescaled_tpm(input = mean_sum_resc_tpm,
+#'                   feature_type = "genesets",
+#'                   feature_id = protein_complex,
 #'                   grp_id = disease_status,
 #'                   error_bar = sd,
 #'                   title = "SERCA protein complex")

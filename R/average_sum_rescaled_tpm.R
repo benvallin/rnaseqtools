@@ -6,7 +6,7 @@
 #' @param sample_id character vector of length 1 or name representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and column <sample_id> of grp_df.
 #' @param gene_id character vector of length 1 or name representing gene ID. Gene IDs should be of the same type in rownames of input and column <gene_id> of gs_df.
 #'
-#' @return a matrix with rescaled TPMs summed by sample ID and gene set and then averaged by groups.
+#' @return a matrix with rescaled TPMs summed by combination of sample ID and gene set and then averaged by groups.
 #' @export
 #'
 #' @examples

@@ -24,7 +24,7 @@ average_sum_rescaled_tpm(
 \item{gene_id}{character vector of length 1 or name representing gene ID. Gene IDs should be of the same type in rownames of input and column <gene_id> of gs_df.}
 }
 \value{
-a matrix with rescaled TPMs summed by sample ID and gene set and then averaged by groups.
+a matrix with rescaled TPMs summed by combination of sample ID and gene set and then averaged by groups.
 }
 \description{
 Average summed rescaled TPMs
