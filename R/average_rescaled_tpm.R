@@ -2,7 +2,7 @@
 #'
 #' @param input numeric matrix of rescaled TPMs with gene IDs as rownames and sample IDs as colnames. Typically produced by rnaseqtools::rescale_tpm.
 #' @param grp_df data.frame or tibble with column sample_id and one or more grouping columns.
-#' @param sample_id character vector of length 1 representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and sample_id column of group_df.
+#' @param sample_id character vector of length 1 representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and column sample_id of group_df.
 #' @param gene_id character vector of length 1 representing gene ID. Used to label row names of input.
 #'
 #' @return a matrix with rescaled TPMs averaged by groups.
@@ -83,7 +83,7 @@ average_rescaled_tpm <- function(input,
          call. = F)
   }
 
-  message("Grouping samples by ", paste0(grp_vars, collapse = ", "), "...")
+  message("Grouping by ", paste0(grp_vars, collapse = ", "), " and ", gene_id, " for averaging rescaled TPMs...\n")
 
   tibble::as_tibble(input,
                     rownames = gene_id) %>%

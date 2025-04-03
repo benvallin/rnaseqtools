@@ -1,3 +1,15 @@
+#' Average summed rescaled TPMs
+#'
+#' @param input numeric matrix of rescaled TPMs with gene IDs as rownames and sample IDs as colnames. Typically produced by rnaseqtools::rescale_tpm.
+#' @param grp_df data.frame or tibble with column sample_id and one or more grouping columns.
+#' @param gs_df
+#' @param sample_id character vector of length 1 representing sample ID. Must be a column name of grp_df. Sample IDs should be of the same type in colnames of input and column sample_id of group_df.
+#' @param gene_id character vector of length 1 representing gene ID. Gene IDs in column gene_id of
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 average_sum_rescaled_tpm <- function(input,
                                      grp_df,
                                      gs_df,
@@ -72,10 +84,10 @@ average_sum_rescaled_tpm <- function(input,
          call. = F)
   }
 
-  if(!all(rownames(input) %in% gs_df[[gene_id]])) {
-    stop("The gene IDs in rownames of input are not all present in the column <gene_id> of gs_df.",
-         call. = F)
-  }
+  # if(!all(rownames(input) %in% gs_df[[gene_id]])) {
+  #   stop("The gene IDs in rownames of input are not all present in the column <gene_id> of gs_df.",
+  #        call. = F)
+  # }
 
   if(!is.character(gene_id) ||
      length(gene_id) != 1L ||
@@ -84,7 +96,9 @@ average_sum_rescaled_tpm <- function(input,
          call. = F)
   }
 
-  # message("Grouping samples by ", paste0(grp_vars, collapse = ", "), "...")
+  message("Grouping by ", sample_id, " and ", gs_var, " for summing rescaled TPMs...\n")
+
+  message("Grouping by ", paste0(grp_vars, collapse = ", "), " and ", gs_var, " for averaging summed rescaled TPMs...\n")
 
   tibble::as_tibble(input,
                     rownames = gene_id) %>%
@@ -96,8 +110,8 @@ average_sum_rescaled_tpm <- function(input,
                      by = sample_id) %>%
     dplyr::left_join(gs_df,
                      by = gene_id) %>%
-    dplyr::filter(!is.na(gs_var)) %>%
-    dplyr::group_by(dplyr::across(.cols = c(grp_vars, sample_id, gs_var))) %>%
+    dplyr::filter(!is.na(.data[[gs_var]])) %>%
+    dplyr::group_by(dplyr::across(.cols = c(sample_id, gs_var))) %>%
     dplyr::mutate(sum_rescaled_tpm = sum(.data$rescaled_tpm, na.rm = T)) %>%
     dplyr::group_by(across(.cols = c(grp_vars, gs_var))) %>%
     dplyr::mutate(mean_sum_rescaled_tpm = mean(.data$sum_rescaled_tpm, na.rm = T),
