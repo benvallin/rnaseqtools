@@ -2,9 +2,9 @@
 #'
 #' @param input data.frame or tibble with character columns <gene_id> and double columns representing sample-specific gene counts.
 #' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
-#' @param sample_metadata data.frame or tibble with character / factor columns <sample_id_var> and <group_id_var>.
+#' @param sample_metadata data.frame or tibble with character / factor columns <sample_id_var> and <group_id_vars>.
 #' @param sample_id_var character vector of length 1 representing sample ID. Must be a column name of sample_metadata.
-#' @param group_id_var character vector of length 1 representing biological group ID. Must be a column name of sample_metadata.
+#' @param group_id_vars character vector representing grouping variables. Must be column name(s) of sample_metadata.
 #' @param ref_gene_ids named character vector of gene IDs to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.
 #' @param gene_groups list of named character vectors of gene IDs representing gene groups to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.
 #' @param cnt_nm character vector of length 1 representing the count name to use in output.
@@ -28,7 +28,7 @@
 #'                              gene_id = "ensembl_gene_id",
 #'                              sample_metadata = bulk_sample_metadata_ex,
 #'                              sample_id_var = "donor_id",
-#'                              group_id_var = "disease_status",
+#'                              group_id_vars = "disease_status",
 #'                              ref_gene_ids = ref_gene_ids,
 #'                              gene_groups = NULL,
 #'                              cnt_nm = "tpm")
@@ -37,11 +37,34 @@ compute_mean_tpm <- function(input,
                              gene_id = "ensembl_gene_id",
                              sample_metadata,
                              sample_id_var,
-                             group_id_var,
+                             group_id_vars,
                              ref_gene_ids = NULL,
                              gene_groups = NULL,
                              cnt_nm = "tpm") {
 
+  gene_id <- rlang::enexpr(gene_id)
+  gene_id <- ifelse(is.symbol(gene_id), deparse(gene_id), eval(gene_id))
+
+  sample_id_var <- rlang::enexpr(sample_id_var)
+  sample_id_var <- ifelse(is.symbol(sample_id_var), deparse(sample_id_var), eval(sample_id_var))
+
+  group_id_vars <- rlang::enexpr(group_id_vars)
+
+  if(is.call(group_id_vars)) {
+
+    for(i in seq_along(group_id_vars)[2:length(group_id_vars)]) {
+      group_id_vars[[i]] <- ifelse(is.symbol(group_id_vars[[i]]),
+                                   deparse(group_id_vars[[i]]),
+                                   eval(group_id_vars[[i]]))
+    }
+
+    group_id_vars <- eval(group_id_vars)
+
+  } else {
+
+    group_id_vars <- ifelse(is.symbol(group_id_vars), deparse(group_id_vars), eval(group_id_vars))
+
+  }
 
   if(!is.character(gene_id) ||
      length(gene_id) != 1L) {
@@ -55,9 +78,8 @@ compute_mean_tpm <- function(input,
          call. = F)
   }
 
-  if(!is.character(group_id_var) ||
-     length(group_id_var) != 1L) {
-    stop("Invalid group_id_var argument.",
+  if(!is.character(group_id_vars)) {
+    stop("Invalid group_id_vars argument.",
          call. = F)
   }
 
@@ -77,11 +99,12 @@ compute_mean_tpm <- function(input,
   }
 
   if(!is.data.frame(sample_metadata) ||
-     !all(c(sample_id_var, group_id_var) %in% colnames(sample_metadata)) ||
+     !all(c(sample_id_var, group_id_vars) %in% colnames(sample_metadata)) ||
      (!is.character(sample_metadata[[sample_id_var]]) && !is.factor(sample_metadata[[sample_id_var]])) ||
-     (!is.character(sample_metadata[[group_id_var]]) && !is.factor(sample_metadata[[group_id_var]]))) {
+     any(purrr::map_lgl(.x = group_id_vars,
+                        .f = ~ (!is.character(sample_metadata[[.x]]) && !is.factor(sample_metadata[[.x]]))))) {
 
-    stop("sample_metadata must be a data.frame or tibble with character / factor columns <sample_id_var> and <group_id_var>.",
+    stop("sample_metadata must be a data.frame or tibble with character / factor columns <sample_id_var> and <group_id_vars>.",
          call. = F)
   }
 
@@ -111,7 +134,7 @@ compute_mean_tpm <- function(input,
                                 values_to = "tpm")
 
   output <- dplyr::left_join(x = output,
-                             y = sample_metadata[, c(sample_id_var, group_id_var)],
+                             y = sample_metadata[, c(sample_id_var, group_id_vars)],
                              by = sample_id_var)
 
   output <- tidyr::nest(.data = output,
@@ -128,7 +151,7 @@ compute_mean_tpm <- function(input,
                                     .f = ~ .x / dim(.y)[[1]])
 
   output <- tidyr::nest(.data = output,
-                        .by = tidyselect::all_of(group_id_var),
+                        .by = tidyselect::all_of(group_id_vars),
                         .key = "group_data")
 
   output$group_data <- purrr::map(.x = output$group_data,
@@ -252,6 +275,6 @@ compute_mean_tpm <- function(input,
   }
 
   dplyr::select(.data = output,
-                group_id_var, gene_id, "sample_data", tidyselect::everything())
+                group_id_vars, gene_id, "sample_data", tidyselect::everything())
 
 }

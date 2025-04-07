@@ -9,7 +9,7 @@ compute_mean_tpm(
   gene_id = "ensembl_gene_id",
   sample_metadata,
   sample_id_var,
-  group_id_var,
+  group_id_vars,
   ref_gene_ids = NULL,
   gene_groups = NULL,
   cnt_nm = "tpm"
@@ -20,11 +20,11 @@ compute_mean_tpm(
 
 \item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
 
-\item{sample_metadata}{data.frame or tibble with character / factor columns <sample_id_var> and <group_id_var>.}
+\item{sample_metadata}{data.frame or tibble with character / factor columns <sample_id_var> and <group_id_vars>.}
 
 \item{sample_id_var}{character vector of length 1 representing sample ID. Must be a column name of sample_metadata.}
 
-\item{group_id_var}{character vector of length 1 representing biological group ID. Must be a column name of sample_metadata.}
+\item{group_id_vars}{character vector representing grouping variables. Must be column name(s) of sample_metadata.}
 
 \item{ref_gene_ids}{named character vector of gene IDs to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.}
 
@@ -54,7 +54,7 @@ mean_tpm <- compute_mean_tpm(input = tpm_df,
                              gene_id = "ensembl_gene_id",
                              sample_metadata = bulk_sample_metadata_ex,
                              sample_id_var = "donor_id",
-                             group_id_var = "disease_status",
+                             group_id_vars = "disease_status",
                              ref_gene_ids = ref_gene_ids,
                              gene_groups = NULL,
                              cnt_nm = "tpm")
