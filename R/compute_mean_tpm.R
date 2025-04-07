@@ -1,13 +1,13 @@
 #' Compute mean TPMs
 #'
 #' @param input data.frame or tibble with character columns <gene_id> and double columns representing sample-specific gene counts.
-#' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
+#' @param gene_id character vector of length 1 or name representing gene ID. Must be a column name of input.
 #' @param sample_metadata data.frame or tibble with character / factor columns <sample_id_var> and <group_id_vars>.
-#' @param sample_id_var character vector of length 1 representing sample ID. Must be a column name of sample_metadata.
-#' @param group_id_vars character vector representing grouping variables. Must be column name(s) of sample_metadata.
+#' @param sample_id_var character vector of length 1 or name representing sample ID. Must be a column name of sample_metadata.
+#' @param group_id_vars character vector or vector of names representing grouping variables. Must be column name(s) of sample_metadata.
 #' @param ref_gene_ids named character vector of gene IDs to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.
 #' @param gene_groups list of named character vectors of gene IDs representing gene groups to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.
-#' @param cnt_nm character vector of length 1 representing the count name to use in output.
+#' @param cnt_nm character vector of length 1 or name representing the count name to use in output.
 #'
 #' @return a tibble with transcript counts averaged by biological group ID.
 #' The mean abundance of each transcript is also expressed as a percentage of the summed abundance of all transcripts.
@@ -25,13 +25,13 @@
 #'
 #' # Compute mean TPMs per disease status
 #' mean_tpm <- compute_mean_tpm(input = tpm_df,
-#'                              gene_id = "ensembl_gene_id",
+#'                              gene_id = ensembl_gene_id,
 #'                              sample_metadata = bulk_sample_metadata_ex,
-#'                              sample_id_var = "donor_id",
-#'                              group_id_vars = "disease_status",
+#'                              sample_id_var = donor_id,
+#'                              group_id_vars = disease_status,
 #'                              ref_gene_ids = ref_gene_ids,
 #'                              gene_groups = NULL,
-#'                              cnt_nm = "tpm")
+#'                              cnt_nm = tpm)
 #'
 compute_mean_tpm <- function(input,
                              gene_id = "ensembl_gene_id",
@@ -65,6 +65,9 @@ compute_mean_tpm <- function(input,
     group_id_vars <- ifelse(is.symbol(group_id_vars), deparse(group_id_vars), eval(group_id_vars))
 
   }
+
+  cnt_nm <- rlang::enexpr(cnt_nm)
+  cnt_nm <- ifelse(is.symbol(cnt_nm), deparse(cnt_nm), eval(cnt_nm))
 
   if(!is.character(gene_id) ||
      length(gene_id) != 1L) {

@@ -18,19 +18,19 @@ compute_mean_tpm(
 \arguments{
 \item{input}{data.frame or tibble with character columns <gene_id> and double columns representing sample-specific gene counts.}
 
-\item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
+\item{gene_id}{character vector of length 1 or name representing gene ID. Must be a column name of input.}
 
 \item{sample_metadata}{data.frame or tibble with character / factor columns <sample_id_var> and <group_id_vars>.}
 
-\item{sample_id_var}{character vector of length 1 representing sample ID. Must be a column name of sample_metadata.}
+\item{sample_id_var}{character vector of length 1 or name representing sample ID. Must be a column name of sample_metadata.}
 
-\item{group_id_vars}{character vector representing grouping variables. Must be column name(s) of sample_metadata.}
+\item{group_id_vars}{character vector or vector of names representing grouping variables. Must be column name(s) of sample_metadata.}
 
 \item{ref_gene_ids}{named character vector of gene IDs to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.}
 
 \item{gene_groups}{list of named character vectors of gene IDs representing gene groups to use as reference. Values must be of the gene ID type specified in gene_id and names will be used in column names of output.}
 
-\item{cnt_nm}{character vector of length 1 representing the count name to use in output.}
+\item{cnt_nm}{character vector of length 1 or name representing the count name to use in output.}
 }
 \value{
 a tibble with transcript counts averaged by biological group ID.
@@ -51,12 +51,12 @@ ref_gene_ids <- gene_metadata_ex \%>\%
 
 # Compute mean TPMs per disease status
 mean_tpm <- compute_mean_tpm(input = tpm_df,
-                             gene_id = "ensembl_gene_id",
+                             gene_id = ensembl_gene_id,
                              sample_metadata = bulk_sample_metadata_ex,
-                             sample_id_var = "donor_id",
-                             group_id_vars = "disease_status",
+                             sample_id_var = donor_id,
+                             group_id_vars = disease_status,
                              ref_gene_ids = ref_gene_ids,
                              gene_groups = NULL,
-                             cnt_nm = "tpm")
+                             cnt_nm = tpm)
 
 }
