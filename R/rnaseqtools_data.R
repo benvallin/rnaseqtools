@@ -179,3 +179,9 @@
 #' }
 "calcium_genes_ex"
 
+#' msa MsaAAMultipleAlignment
+#'
+#' Example MsaAAMultipleAlignment object produced by msa::msa.
+#'
+"msa_ex"
+

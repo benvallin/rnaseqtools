@@ -31,16 +31,19 @@ Imports:
     tidyr,
     tidyselect
 Suggests: 
+    Biostrings,
     DESeq2,
     fgsea,
     limma,
+    msa,
     msigdbdf,
     msigdbr (>= 10.0.1),
     RCurl,
     rjson,
     rtracklayer,
     SummarizedExperiment,
-    tximeta
+    tximeta,
+    viridis
 Depends: 
     R (>= 3.5)
 LazyData: true

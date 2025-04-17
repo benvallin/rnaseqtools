@@ -44,6 +44,9 @@ split_df_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.fea
 # Path to Mari's list of target genes (csv)
 mcc_tars_path <- "/scratch/ben/rnaseq/data/mari/input/mari_target_genes2.csv"
 
+# Path to SNCA metadata (csv)
+snca_metadata_path <- "/scratch/ben/rnaseq/data/ben/pff_bulk/gencode_v46/output/make_feature_metadata/snca_metadata.csv"
+
 # Set up ------------------------------------------------------------------
 
 # Append trailing "/" to directory paths if missing
@@ -347,4 +350,34 @@ calcium_genes_ex <- calcium_genes_ex %>%
 
 use_data(calcium_genes_ex, overwrite = T)
 
+# msa ---------------------------------------------------------------------
 
+snca_metadata <- read_csv(snca_metadata_path)
+
+snca_metadata <- snca_metadata %>%
+  dplyr::filter(peptide_seq != "Sequence unavailable") %>%
+  mutate(peptide_seq = str_remove(peptide_seq, "\\*")) %>%
+  arrange(desc(width_peptide), desc(width_transcript))
+
+asyn_metadata <- snca_metadata %>%
+  mutate(isoform_id = paste0("alpha-synuclein - ", width_peptide, "aa")) %>%
+  select(isoform_id, peptide_seq) %>%
+  unique()
+
+prot_seq <- lapply(X = asyn_metadata$peptide_seq,
+                   FUN = function(x)  Biostrings::AAString(x = x))
+
+prot_seq <- setNames(object = prot_seq,
+                     nm = asyn_metadata$isoform_id)
+
+prot_seq <- Biostrings::AAStringSet(x = prot_seq, use.names = TRUE)
+
+msa_ex <- msa::msa(inputSeqs = prot_seq,
+                   method = "ClustalW",
+                   cluster = "upgma",
+                   gapOpening = 7,
+                   gapExtension = 0,
+                   type = "protein",
+                   order = "input")
+
+use_data(msa_ex, overwrite = T)
