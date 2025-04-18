@@ -8,7 +8,7 @@ plot_lfc(
   input,
   genes,
   gene_id = "ensembl_gene_id",
-  pretty_gene_id = "gene_symbol",
+  pretty_gene_id = NULL,
   ref_cond = "ref cond.",
   test_cond = "test cond.",
   key_genes = NULL,
@@ -25,13 +25,13 @@ plot_lfc(
 
 \item{genes}{character vector of gene IDs for which log2 fold changes should be displayed. Must be of the gene ID type specified in gene_id.}
 
-\item{gene_id}{character vector of length 1 representing gene ID. Must be a column name of input.}
+\item{gene_id}{character vector of length 1 or name representing gene ID. Must be a column name of input.}
 
-\item{pretty_gene_id}{character vector of length 1 representing alternative gene ID to use for display. Must be a column name of input.}
+\item{pretty_gene_id}{character vector of length 1 or name representing alternative gene ID to use for display. Must be a column name of input.}
 
-\item{ref_cond}{character vector of length 1 representing the reference biological condition.}
+\item{ref_cond}{character vector of length 1 or name representing the reference biological condition.}
 
-\item{test_cond}{character vector of length 1 representing the test biological condition.}
+\item{test_cond}{character vector of length 1 or name representing the test biological condition.}
 
 \item{key_genes}{character vector of gene IDs representing key genes among genes. Must be of the gene ID type specified in gene_id.}
 

@@ -2,10 +2,10 @@
 #'
 #' @param input data.frame or tibble with character columns <gene_id> and <pretty_gene_id>, and double columns log2FoldChange, lfcSE and padj.
 #' @param genes character vector of gene IDs for which log2 fold changes should be displayed. Must be of the gene ID type specified in gene_id.
-#' @param gene_id character vector of length 1 representing gene ID. Must be a column name of input.
-#' @param pretty_gene_id character vector of length 1 representing alternative gene ID to use for display. Must be a column name of input.
-#' @param ref_cond character vector of length 1 representing the reference biological condition.
-#' @param test_cond character vector of length 1 representing the test biological condition.
+#' @param gene_id character vector of length 1 or name representing gene ID. Must be a column name of input.
+#' @param pretty_gene_id character vector of length 1 or name representing alternative gene ID to use for display. Must be a column name of input.
+#' @param ref_cond character vector of length 1 or name representing the reference biological condition.
+#' @param test_cond character vector of length 1 or name representing the test biological condition.
 #' @param key_genes character vector of gene IDs representing key genes among genes. Must be of the gene ID type specified in gene_id.
 #' @param key_genes_name character vector of length 1 representing the name of the key genes group.
 #' @param title character vector of length 1 representing plot title.
@@ -40,7 +40,7 @@
 plot_lfc <- function(input,
                      genes,
                      gene_id = "ensembl_gene_id",
-                     pretty_gene_id = "gene_symbol",
+                     pretty_gene_id = NULL,
                      ref_cond = "ref cond.",
                      test_cond = "test cond.",
                      key_genes = NULL,
@@ -51,16 +51,36 @@ plot_lfc <- function(input,
                      padj_lab = TRUE,
                      lab_nudge = 0.02) {
 
+  gene_id <- substitute(gene_id)
+  gene_id <- if(is.symbol(gene_id)) deparse(gene_id) else eval(gene_id)
+
+  pretty_gene_id <- substitute(pretty_gene_id)
+  pretty_gene_id <- if(is.symbol(pretty_gene_id)) deparse(pretty_gene_id) else pretty_gene_id
+
+  ref_cond <- substitute(ref_cond)
+  ref_cond <- if(is.symbol(ref_cond)) deparse(ref_cond) else ref_cond
+
+  test_cond <- substitute(test_cond)
+  test_cond <- if(is.symbol(test_cond)) deparse(test_cond) else test_cond
+
   if(!is.character(gene_id) ||
      length(gene_id) != 1L) {
     stop("Invalid gene_id argument.",
          call. = F)
   }
 
-  if(!is.character(pretty_gene_id) ||
-     length(pretty_gene_id) != 1L) {
-    stop("Invalid pretty_gene_id argument.",
-         call. = F)
+  if(is.null(pretty_gene_id)) {
+
+    pretty_gene_id <- gene_id
+
+  } else {
+
+    if(!is.character(pretty_gene_id) ||
+       length(pretty_gene_id) != 1L) {
+      stop("Invalid pretty_gene_id argument.",
+           call. = F)
+    }
+
   }
 
   if(!is.data.frame(input) ||
@@ -78,6 +98,11 @@ plot_lfc <- function(input,
      (is.character(genes) && (length(genes) == 0L ||
                               any(is.na(genes))))) {
     stop("Invalid genes argument.",
+         call. = F)
+  }
+
+  if(sum(genes %in% input[[gene_id]]) == 0L) {
+    stop("None of the genes are in column <gene_id> of input.",
          call. = F)
   }
 
