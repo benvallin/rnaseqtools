@@ -1,6 +1,6 @@
 #' Compute mean TPMs
 #'
-#' @param input data.frame or tibble with character columns <gene_id> and double columns representing sample-specific gene counts.
+#' @param input data.frame or tibble with character column <gene_id> and double columns representing sample-specific gene counts.
 #' @param gene_id character vector of length 1 or name representing gene ID. Must be a column name of input.
 #' @param sample_metadata data.frame or tibble with character / factor columns <sample_id_var> and <group_id_vars>.
 #' @param sample_id_var character vector of length 1 or name representing sample ID. Must be a column name of sample_metadata.

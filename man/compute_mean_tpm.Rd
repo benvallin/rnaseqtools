@@ -16,7 +16,7 @@ compute_mean_tpm(
 )
 }
 \arguments{
-\item{input}{data.frame or tibble with character columns <gene_id> and double columns representing sample-specific gene counts.}
+\item{input}{data.frame or tibble with character column <gene_id> and double columns representing sample-specific gene counts.}
 
 \item{gene_id}{character vector of length 1 or name representing gene ID. Must be a column name of input.}
 
