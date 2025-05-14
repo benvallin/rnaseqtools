@@ -279,6 +279,10 @@ plot_mean_tpm <- function(input,
 
   input <- input[input[[gene_id]] %in% genes,]
 
+  gene_lvls <- unique(input[match(x = genes, table = input[[gene_id]]), pretty_gene_id][[1]])
+
+  input[[pretty_gene_id]] <- factor(x = input[[pretty_gene_id]], levels = gene_lvls)
+
   aesthetics <- quote(ggplot2::aes(x = .data$mean_tpm,
                                    y = .data[[pretty_gene_id]]))
 
