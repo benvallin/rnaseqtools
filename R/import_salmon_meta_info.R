@@ -1,8 +1,8 @@
 #' Import Salmon's metadata
 #'
-#' @param file A meta_info.json file produced by Salmon software.
+#' @param file a meta_info.json file produced by Salmon software.
 #'
-#' @return A tibble with key metrics extracted from input meta_info.json file.
+#' @return a tibble with key metrics extracted from input meta_info.json file.
 #' @export
 #'
 #' @examples

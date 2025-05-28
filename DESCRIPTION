@@ -29,7 +29,8 @@ Imports:
     rlang,
     tibble,
     tidyr,
-    tidyselect
+    tidyselect,
+    utils
 Suggests: 
     Biostrings,
     DESeq2,

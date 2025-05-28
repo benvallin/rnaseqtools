@@ -7,10 +7,10 @@
 import_salmon_meta_info(file)
 }
 \arguments{
-\item{file}{A meta_info.json file produced by Salmon software.}
+\item{file}{a meta_info.json file produced by Salmon software.}
 }
 \value{
-A tibble with key metrics extracted from input meta_info.json file.
+a tibble with key metrics extracted from input meta_info.json file.
 }
 \description{
 Import Salmon's metadata
