@@ -84,7 +84,7 @@ summarise_gene_types <- function(input, gene_id, sample_id, gene_metadata) {
   libsize <- colSums(cnt)
 
   df1 <- data.frame(libsize = libsize,
-                    n_all = colSums(cnt > 0))
+                    n_genes = colSums(cnt > 0))
 
   df1[[sample_id]] <- rownames(df1)
 
@@ -104,13 +104,13 @@ summarise_gene_types <- function(input, gene_id, sample_id, gene_metadata) {
 
                     })
 
-  names(subcnts) <- c("protein_coding", "mitochondrial", "ribosomal")
+  names(subcnts) <- c("pc", "mt", "rb")
 
 
   df2 <- lapply(X = subcnts,
                 FUN = function(x) { colSums(x > 0) })
 
-  names(df2) <- paste0("n_", names(df2))
+  names(df2) <- paste0("n_", names(df2), "_genes")
 
   df2 <- as.data.frame(df2)
 
@@ -119,7 +119,7 @@ summarise_gene_types <- function(input, gene_id, sample_id, gene_metadata) {
   df3 <- lapply(X = subcnts,
                 FUN = function(x) { colSums(x) / libsize * 100 })
 
-  names(df3) <- paste0("pct_", names(df3))
+  names(df3) <- paste0("pct_", names(df3), "_genes")
 
   df3 <- as.data.frame(df3)
 
