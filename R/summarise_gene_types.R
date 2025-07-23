@@ -67,6 +67,13 @@ summarise_gene_types <- function(input, gene_id, sample_id, gene_metadata) {
          call. = F)
   }
 
+  if(!all(vapply(X = input[[gene_id]],
+                 FUN = function(x) { x %in% gene_metadata[[gene_id]] },
+                 FUN.VALUE = NA))) {
+    stop("Input contains gene_id value(s) not present in gene_metadata.",
+         call. = F)
+  }
+
   cnt <- as.data.frame(input)
 
   rownames(cnt) <- cnt[[gene_id]]
