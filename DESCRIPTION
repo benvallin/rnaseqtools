@@ -27,6 +27,7 @@ Imports:
     methods,
     purrr,
     rlang,
+    stats,
     tibble,
     tidyr,
     tidyselect,
