@@ -50,6 +50,13 @@
 #'
 "sc_log2_tpm1p_ex"
 
+#' scRNA-seq raw count matrix
+#'
+#' Example raw count matrix with column and row names representing cell barcodes and ensembl gene IDs, respectively.
+#' The matrix has 500 rows and 547 columns.
+#'
+"sc_cnt_ex"
+
 #' MAST summaryZlmFit
 #'
 #' Example summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) using the workflow described at:

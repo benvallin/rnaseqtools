@@ -2,50 +2,14 @@
 
 # ==> To be set by user <==
 
+# Path to directory containing source data
+example_data_dir_path <- "/scratch/ben/rnaseq/tools/r_packages/example_data/rnaseqtools/"
+
 # Path to output directory for raw data
 raw_data_dir_path <- "inst/extdata/"
 
 # Path to output directory for persistent user data
 persistent_data_dir_path <- tools::R_user_dir(package = "rnaseqtools", which = "data")
-
-# Path to Salmon's meta_info file (json)
-salmon_meta_info_path <- "/scratch/ben/rnaseq/seq_data/ben/coculture_div67/gencode_v46/04_salmon_quant/Sample_2_S36_L003_CGTAGAACCTTGAGTT/aux_info/meta_info.json"
-
-# Path to transcript metadata file (csv)
-transcript_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/feature_metadata/transcript_metadata.csv"
-
-# Path to bulk RNA-seq sample metadata file (rds)
-bulk_sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/pff_bulk/gencode_v46/output/make_sample_metadata/sample_metadata.rds"
-
-# Path to bulk RNA-seq TPM matrix file (csv)
-bulk_tpm_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_tpm_lengthScaledTPM_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2.csv"
-
-# Path to scRNA-seq sample metadata file (rds)
-sc_sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/cell_clustering/tidy_sample_metadata_filtered_cells/sample_metadata.rds"
-
-# Path to scRNA-seq log2(TPM+1) matrix file (csv)
-sc_log2_tpm1p_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2.csv"
-
-# Path to MAST ZlmFit file (rds)
-mast_ZlmFit_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_glmer_zlm_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2_model_formula~_n_gene_on_+_exposure_+_(1_|_line_name)_padj0.05.rds"
-
-# Path to DESeq2 DESeqResults file (rds)
-deseq2_DESeqResults_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_zinbwave_deseq2/deseq2_lrt_res_raw_count_lengthScaledTPM_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2_scran_sf_model_formula~_line_name_+_exposure_padj0.05.rds"
-
-# Path to directory containing Salmon quant files
-salmon_quant_dir_path <- "/scratch/ben/rnaseq/seq_data/ben/coculture_div67/gencode_v46/05_salmon_splici_quant/"
-
-# Path to splici metadata file (tsv)
-splici_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.tx2gene_expanded.tsv"
-
-# Path to spliced - unspliced gene ID correspondence file (tsv)
-split_df_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.features_expanded.tsv"
-
-# Path to Mari's list of target genes (csv)
-mcc_tars_path <- "/scratch/ben/rnaseq/data/mari/input/mari_target_genes2.csv"
-
-# Path to SNCA metadata (csv)
-snca_metadata_path <- "/scratch/ben/rnaseq/data/ben/pff_bulk/gencode_v46/output/make_feature_metadata/snca_metadata.csv"
 
 # Set up ------------------------------------------------------------------
 
@@ -69,6 +33,59 @@ load_all()
 
 # Set n cores for parallel processing
 options(mc.cores = 48)
+
+# Define source data paths ------------------------------------------------
+
+# Path to Salmon's meta_info file (json)
+# salmon_meta_info_path <- "/scratch/ben/rnaseq/seq_data/ben/coculture_div67/gencode_v46/04_salmon_quant/Sample_2_S36_L003_CGTAGAACCTTGAGTT/aux_info/meta_info.json"
+salmon_meta_info_path <- paste0(example_data_dir_path, "meta_info.json")
+
+# Path to transcript metadata file (csv)
+# transcript_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/feature_metadata/transcript_metadata.csv"
+transcript_metadata_path <- paste0(example_data_dir_path, "transcript_metadata.csv")
+
+# Path to bulk RNA-seq sample metadata file (rds)
+# bulk_sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/pff_bulk/gencode_v46/output/make_sample_metadata/sample_metadata.rds"
+bulk_sample_metadata_path <- paste0(example_data_dir_path, "bulk_sample_metadata.rds")
+
+# Path to scRNA-seq sample metadata file (rds)
+# sc_sample_metadata_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/cell_clustering/tidy_sample_metadata_filtered_cells/sample_metadata.rds"
+sc_sample_metadata_path <- paste0(example_data_dir_path, "sc_sample_metadata.rds")
+
+# Path to scRNA-seq log2(TPM+1) matrix file (csv)
+# sc_log2_tpm1p_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2.csv"
+sc_log2_tpm1p_path <- paste0(example_data_dir_path, "sc_log2_tpm1p.csv")
+
+# Path to scRNA-seq raw count matrix file (csv)
+# sc_cnt_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/count_processing/summarise_to_gene_level/raw_count.csv"
+sc_cnt_path <- paste0(example_data_dir_path, "sc_cnt.csv")
+
+# Path to MAST ZlmFit file (rds)
+# mast_ZlmFit_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_mast/mast_glmer_zlm_log2_tpm_lengthScaledTPM1p_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2_model_formula~_n_gene_on_+_exposure_+_(1_|_line_name)_padj0.05.rds"
+mast_ZlmFit_path <- paste0(example_data_dir_path, "mast_ZlmFit.rds")
+
+# Path to DESeq2 DESeqResults file (rds)
+# deseq2_DESeqResults_path <- "/scratch/ben/rnaseq/data/ben/coculture_div67/output/dge_gsea/dge_exposure_zinbwave_deseq2/deseq2_lrt_res_raw_count_lengthScaledTPM_neuron_B856_B156_B067_included_solo_recip_pc_genes_min_cnt_excl0_min_freq_incl0.2_scran_sf_model_formula~_line_name_+_exposure_padj0.05.rds"
+deseq2_DESeqResults_path <- paste0(example_data_dir_path, "deseq2_DESeqResults.rds")
+
+# Path to directory containing Salmon quant files
+salmon_quant_dir_path <- "/scratch/ben/rnaseq/seq_data/ben/coculture_div67/gencode_v46/05_salmon_splici_quant/"
+
+# Path to splici metadata file (tsv)
+# splici_metadata_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.tx2gene_expanded.tsv"
+splici_metadata_path <- paste0(example_data_dir_path, "splici_metadata.tsv")
+
+# Path to spliced - unspliced gene ID correspondence file (tsv)
+# split_df_path <- "/scratch/ben/rnaseq/ref_data/2024.08_reprocess/gencode.v46.features_expanded.tsv"
+split_df_path <- paste0(example_data_dir_path, "split_df.tsv")
+
+# Path to Mari's list of target genes (csv)
+# mcc_tars_path <- "/scratch/ben/rnaseq/data/mari/input/mari_target_genes2.csv"
+mcc_tars_path <- paste0(example_data_dir_path, "mcc_tars.csv")
+
+# Path to SNCA metadata (csv)
+# snca_metadata_path <- "/scratch/ben/rnaseq/data/ben/pff_bulk/gencode_v46/output/make_feature_metadata/snca_metadata.csv"
+snca_metadata_path <- paste0(example_data_dir_path, "snca_metadata.csv")
 
 # GENCODE -----------------------------------------------------------------
 
@@ -155,6 +172,19 @@ keep <- names(head(x = sort(x = rowMeans(sc_log2_tpm1p_ex), decreasing = T), n =
 sc_log2_tpm1p_ex <- sc_log2_tpm1p_ex[keep,]
 
 use_data(sc_log2_tpm1p_ex, compress = "xz", overwrite = T)
+
+# Raw count matrix
+sc_cnt_ex <- data.table::fread(input = sc_cnt_path) %>%
+  left_join(gene_metadata_ex[, c("ensembl_gene_id_version", "ensembl_gene_id")],
+            by = join_by(ensembl_gene_id_version)) %>%
+  filter(!is.na(ensembl_gene_id)) %>%
+  select(-ensembl_gene_id_version) %>%
+  column_to_rownames(var = "ensembl_gene_id") %>%
+  as.matrix()
+
+sc_cnt_ex <- sc_cnt_ex[rownames(sc_log2_tpm1p_ex), colnames(sc_log2_tpm1p_ex)]
+
+use_data(sc_cnt_ex, compress = "xz", overwrite = T)
 
 # Sample metadata
 sc_sample_metadata_ex <- read_rds(file = sc_sample_metadata_path)

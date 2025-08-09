@@ -25,6 +25,7 @@ Imports:
     magrittr,
     matrixStats,
     methods,
+    parallel,
     purrr,
     rlang,
     stats,
