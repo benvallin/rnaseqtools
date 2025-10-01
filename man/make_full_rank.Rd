@@ -34,7 +34,9 @@ model_mtx <- model.matrix(object = formula(model_formula),
                           data = sample_metadata[sample_metadata$donor_id != "donor2",])
 
 # Attempt to make model matrix full rank
-model_mtx <- make_full_rank(model_matrix = model_mtx)
+message("Error captured:\n",
+        attr(x = try(make_full_rank(model_matrix = model_mtx), silent = TRUE),
+             which = "condition")$message)
 
 ### Case when matrix is not full rank due to linearly dependent columns
 

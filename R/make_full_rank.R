@@ -24,7 +24,9 @@
 #'                           data = sample_metadata[sample_metadata$donor_id != "donor2",])
 #'
 #' # Attempt to make model matrix full rank
-#' model_mtx <- make_full_rank(model_matrix = model_mtx)
+#' message("Error captured:\n",
+#'         attr(x = try(make_full_rank(model_matrix = model_mtx), silent = TRUE),
+#'              which = "condition")$message)
 #'
 #' ### Case when matrix is not full rank due to linearly dependent columns
 #'
@@ -53,9 +55,9 @@ make_full_rank <- function(model_matrix) {
 
   }
 
-  not_full_rank <- qr(model_matrix)$rank < ncol(model_matrix)
+  is_full_rank <- function(mtx) { !(qr(mtx)$rank < ncol(mtx)) }
 
-  if (not_full_rank) {
+  if (!is_full_rank(mtx = model_matrix)) {
 
     full_zero_column <- any(colSums(model_matrix) == 0)
 
@@ -64,10 +66,24 @@ make_full_rank <- function(model_matrix) {
       message(
         "Model matrix is not full rank.",
         "\nCause: levels or combinations of levels without any samples have resulted in column(s) full of zeros in the model matrix.",
-        "\nFix: discarding full zero column(s) and returning subset model matrix."
+        "\nPossible fix: discarding full zero column(s) and checking subset model matrix again..."
       )
 
       output <- model_matrix[, which(colSums(model_matrix) != 0), drop = F]
+
+      if(!is_full_rank(mtx = output)) {
+
+        stop(
+          "\nModel matrix still not full rank after discarding full zero column(s).",
+          "\nCause: one or more variables or interaction terms in the design formula are linear combinations of the others and must be removed.",
+          call. = F
+        )
+
+      } else {
+
+        message("Worked! Returning subset model matrix.")
+
+      }
 
     } else {
 
