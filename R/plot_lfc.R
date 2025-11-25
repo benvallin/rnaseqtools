@@ -423,16 +423,35 @@ plot_lfc <- function(input,
 
     df <- dplyr::bind_rows(df, df_missing)
 
+  }
+
+  if(length(unique(df$lfc_cat)) == 3L) {
+
     df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
                                        c("gene not detected",
                                          "log2FoldChange not computed",
                                          "log2FoldChange computed"))
 
+  } else if(length(unique(df$lfc_cat)) == 2L) {
+
+    if(include_missing) {
+
+      df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
+                                         c("gene not detected",
+                                           "log2FoldChange computed"))
+
+    } else {
+
+      df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
+                                         c("log2FoldChange not computed",
+                                           "log2FoldChange computed"))
+
+    }
+
   } else {
 
     df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
-                                       c("log2FoldChange not computed",
-                                         "log2FoldChange computed"))
+                                         unique(df$lfc_cat))
 
   }
 
