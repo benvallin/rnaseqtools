@@ -9,6 +9,7 @@ plot_lfc(
   genes,
   gene_id = "ensembl_gene_id",
   pretty_gene_id = NULL,
+  include_missing = FALSE,
   ref_cond = "ref cond.",
   test_cond = "test cond.",
   key_genes = NULL,
@@ -28,6 +29,8 @@ plot_lfc(
 \item{gene_id}{character vector of length 1 or name representing gene ID. Must be a column name of input.}
 
 \item{pretty_gene_id}{character vector of length 1 or name representing alternative gene ID to use for display. Must be a column name of input.}
+
+\item{include_missing}{logical vector of length 1 indicating if gene IDs not present in column <gene_id> of input should be represented.}
 
 \item{ref_cond}{character vector of length 1 or name representing the reference biological condition.}
 
