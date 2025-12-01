@@ -4,12 +4,20 @@
 \alias{tidy_summaryZlmFit}
 \title{Tidy MAST zlm summary}
 \usage{
-tidy_summaryZlmFit(input, coef, level = 0.95, gene_id = "ensembl_gene_id")
+tidy_summaryZlmFit(
+  input,
+  coef,
+  coef_scale = "log2",
+  level = 0.95,
+  gene_id = "ensembl_gene_id"
+)
 }
 \arguments{
 \item{input}{summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) where zlm is a ZlmFit object. See ?MAST::\verb{summary,ZlmFit-method}.}
 
 \item{coef}{character vector of length 1 representing the coefficient of interest for LRT.}
+
+\item{coef_scale}{character vector of length 1 representing coefficient scale. Either 'log2' or 'log'.}
 
 \item{level}{level of confidence coefficient, should be the same as in the MAST::summary call.}
 
@@ -25,6 +33,7 @@ Tidy MAST zlm summary
 # Extract MAST log fold change results from summaryZlmFit object
 mast_results <- tidy_summaryZlmFit(input = summaryZlmFit_ex,
                                    coef = "treatmenttreated",
+                                   coef_scale = "log2",
                                    level = 0.95,
                                    gene_id = "ensembl_gene_id")
 
