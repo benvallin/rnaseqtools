@@ -13,7 +13,8 @@ fit_lmer_continuous(
   coef_var,
   coef_test_lvl,
   cnt_scale = "log2",
-  parallel = FALSE
+  parallel = FALSE,
+  ...
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ fit_lmer_continuous(
 \item{cnt_scale}{character vector of length 1 representing count scale. Either 'log2' or 'log'.}
 
 \item{parallel}{logical vector of length 1 indicating if parallelisation should be enabled. If TRUE, use n detected cores - 1. Not implemented for windows.}
+
+\item{...}{optional arguments passed to lmerTest::lmer.}
 }
 \value{
 a tibble with lmerTest::lmer results.

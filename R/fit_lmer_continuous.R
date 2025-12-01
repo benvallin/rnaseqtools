@@ -12,6 +12,7 @@
 #' @param coef_test_lvl character vector of length 1 representing the test level for the coefficient of interest. Must be a value of <coef_var>.
 #' @param cnt_scale character vector of length 1 representing count scale. Either 'log2' or 'log'.
 #' @param parallel logical vector of length 1 indicating if parallelisation should be enabled. If TRUE, use n detected cores - 1. Not implemented for windows.
+#' @param ... optional arguments passed to lmerTest::lmer.
 #'
 #' @return a tibble with lmerTest::lmer results.
 #'
@@ -42,7 +43,8 @@ fit_lmer_continuous <- function(sca,
                                 coef_var,
                                 coef_test_lvl,
                                 cnt_scale = "log2",
-                                parallel = FALSE) {
+                                parallel = FALSE,
+                                ...) {
 
   if(!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
 
@@ -158,7 +160,8 @@ fit_lmer_continuous <- function(sca,
 
     fit <- lmerTest::lmer(formula = stats::formula(paste0("y ", model_formula)),
                           data = gene_df,
-                          REML = FALSE)
+                          REML = FALSE,
+                          ...)
 
     res <- broom.mixed::tidy(x = fit, effects = "fixed")
 
