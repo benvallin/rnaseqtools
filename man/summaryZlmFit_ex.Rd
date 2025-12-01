@@ -3,7 +3,12 @@
 \docType{data}
 \name{summaryZlmFit_ex}
 \alias{summaryZlmFit_ex}
-\title{MAST summaryZlmFit}
+\title{#' SingleCellAssay object
+#'
+#' Example SingleCellAssay object constructed from sc_log2_tpm1p_ex and sc_sample_metadata_ex.
+#'
+"sca_ex"
+MAST summaryZlmFit}
 \format{
 An object of class \code{summaryZlmFit} (inherits from \code{list}) of length 1.
 }

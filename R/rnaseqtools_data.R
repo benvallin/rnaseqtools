@@ -57,6 +57,12 @@
 #'
 "sc_cnt_ex"
 
+#' #' SingleCellAssay object
+#' #'
+#' #' Example SingleCellAssay object constructed from sc_log2_tpm1p_ex and sc_sample_metadata_ex.
+#' #'
+#' "sca_ex"
+
 #' MAST summaryZlmFit
 #'
 #' Example summaryZlmFit object produced by MAST::summary(object = zlm, logFC = T, doLRT = T) using the workflow described at:

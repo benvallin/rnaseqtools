@@ -204,6 +204,12 @@ sc_sample_metadata_ex <- sc_sample_metadata_ex[match(x = colnames(sc_log2_tpm1p_
 
 use_data(sc_sample_metadata_ex, overwrite = T)
 
+# # SingleCellAssay object
+# sca_ex <- MAST::FromMatrix(exprsArray = sc_log2_tpm1p_ex,
+#                            cData = as.data.frame(sc_sample_metadata_ex))
+#
+# use_data(sca_ex, compress = "xz", overwrite = T)
+
 # MAST --------------------------------------------------------------------
 
 # MAST summaryZlmFit

@@ -35,9 +35,12 @@ Imports:
     utils
 Suggests: 
     Biostrings,
+    broom.mixed,
     DESeq2,
     fgsea,
     limma,
+    lmerTest,
+    MAST,
     msa,
     msigdbdf,
     msigdbr (>= 10.0.1),

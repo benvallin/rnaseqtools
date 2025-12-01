@@ -7,7 +7,7 @@
 tidy_summaryZlmFit(
   input,
   coef,
-  coef_scale = "log2",
+  cnt_scale = "log2",
   level = 0.95,
   gene_id = "ensembl_gene_id"
 )
@@ -17,7 +17,7 @@ tidy_summaryZlmFit(
 
 \item{coef}{character vector of length 1 representing the coefficient of interest for LRT.}
 
-\item{coef_scale}{character vector of length 1 representing coefficient scale. Either 'log2' or 'log'.}
+\item{cnt_scale}{character vector of length 1 representing count scale. Either 'log2' or 'log'.}
 
 \item{level}{level of confidence coefficient, should be the same as in the MAST::summary call.}
 
@@ -33,7 +33,7 @@ Tidy MAST zlm summary
 # Extract MAST log fold change results from summaryZlmFit object
 mast_results <- tidy_summaryZlmFit(input = summaryZlmFit_ex,
                                    coef = "treatmenttreated",
-                                   coef_scale = "log2",
+                                   cnt_scale = "log2",
                                    level = 0.95,
                                    gene_id = "ensembl_gene_id")
 
