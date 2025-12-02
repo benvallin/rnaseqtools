@@ -21,7 +21,7 @@ compute_pseudobulk(
 
 \item{cell_var}{character vector of length 1 or name representing cell ID. Must be a column name of input and cell_metadata.}
 
-\item{group_vars}{character vector or vector of names representing grouping variables for pseudobulking. Must be column name(s) of cell_metadata.}
+\item{group_vars}{character vector representing grouping variables for pseudobulking. Must be column name(s) of cell_metadata.}
 
 \item{discard_not_expressed}{logical vector of length 1 indicating if features with 0 counts for all the pseudobulks should be discarded.}
 
@@ -49,7 +49,7 @@ sc_cnt_df <- transpose_cnt_df(input = sc_cnt_df,
 pseudobulks <- compute_pseudobulk(input = sc_cnt_df,
                                   cell_metadata = sc_sample_metadata_ex,
                                   cell_var = barcode,
-                                  group_vars = donor_id,
+                                  group_vars = "donor_id",
                                   parallel = FALSE)
 
 }

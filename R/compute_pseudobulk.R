@@ -3,7 +3,7 @@
 #' @param input data.frame or tibble with character / factor column <cell_var> and numeric columns representing feature-specific counts.
 #' @param cell_metadata data.frame or tibble with character / factor columns <cell_var> and <group_vars>.
 #' @param cell_var character vector of length 1 or name representing cell ID. Must be a column name of input and cell_metadata.
-#' @param group_vars character vector or vector of names representing grouping variables for pseudobulking. Must be column name(s) of cell_metadata.
+#' @param group_vars character vector representing grouping variables for pseudobulking. Must be column name(s) of cell_metadata.
 #' @param discard_not_expressed logical vector of length 1 indicating if features with 0 counts for all the pseudobulks should be discarded.
 #' @param parallel logical vector of length 1 indicating if parallelisation should be enabled. If TRUE, use n detected cores - 1. Not implemented for windows.
 #' @param skip_table_checks logical vector of length 1 indicating if format checking of input / cell_metadata should be skipped. If TRUE, malformed tables won't be detected but can greatly improve speed.
@@ -25,7 +25,7 @@
 #' pseudobulks <- compute_pseudobulk(input = sc_cnt_df,
 #'                                   cell_metadata = sc_sample_metadata_ex,
 #'                                   cell_var = barcode,
-#'                                   group_vars = donor_id,
+#'                                   group_vars = "donor_id",
 #'                                   parallel = FALSE)
 #'
 compute_pseudobulk <- function(input,
@@ -39,26 +39,6 @@ compute_pseudobulk <- function(input,
   cell_var <- substitute(cell_var)
   cell_var <- ifelse(is.symbol(cell_var), deparse(cell_var), eval(cell_var))
 
-  group_vars <- substitute(group_vars)
-
-  if(is.call(group_vars)) {
-
-    for(i in seq_along(group_vars)[2:length(group_vars)]) {
-
-      group_vars[[i]] <- ifelse(is.symbol(group_vars[[i]]),
-                                deparse(group_vars[[i]]),
-                                eval(group_vars[[i]]))
-
-    }
-
-    group_vars <- eval(group_vars)
-
-  } else {
-
-    group_vars <- ifelse(is.symbol(group_vars), deparse(group_vars), eval(group_vars))
-
-  }
-
   if(!is.character(cell_var) ||
      length(cell_var) != 1L) {
 
@@ -67,7 +47,9 @@ compute_pseudobulk <- function(input,
 
   }
 
-  if(!is.character(group_vars)) {
+  if(!is.character(group_vars) ||
+     (length(group_vars) == 1L && is.na(group_vars)) ||
+     is.null(group_vars)) {
 
     stop("Invalid group_vars argument.",
          call. = F)
