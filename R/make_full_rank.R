@@ -41,19 +41,19 @@
 #'
 make_full_rank <- function(model_matrix) {
 
-  if(!is.matrix(model_matrix)) {
+  if(!is.matrix(model_matrix) || !is.numeric(model_matrix)) {
 
-    stop("Input model_matrix is not a matrix.",
+    stop("Input model_matrix is not a numeric matrix.",
          call. = F)
 
   }
 
-  if(!identical(sort(unique(as.vector(model_matrix))), c(0, 1))) {
-
-    stop("Input model_matrix should only contain zeros and ones.",
-         call. = F)
-
-  }
+  # if(!identical(sort(unique(as.vector(model_matrix))), c(0, 1))) {
+  #
+  #   stop("Input model_matrix should only contain zeros and ones.",
+  #        call. = F)
+  #
+  # }
 
   is_full_rank <- function(mtx) { !(qr(mtx)$rank < ncol(mtx)) }
 
