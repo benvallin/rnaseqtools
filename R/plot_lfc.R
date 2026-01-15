@@ -434,17 +434,23 @@ plot_lfc <- function(input,
 
   } else if(length(unique(df$lfc_cat)) == 2L) {
 
-    if(!all(genes %in% df[[gene_id]])) {
+    if(identical(sort(unique(df$lfc_cat)), c("gene not detected", "log2FoldChange computed"))) {
 
       df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
                                          c("gene not detected",
                                            "log2FoldChange computed"))
 
-    } else {
+    } else if(identical(sort(unique(df$lfc_cat)), c("log2FoldChange computed", "log2FoldChange not computed"))) {
 
       df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
                                          c("log2FoldChange not computed",
                                            "log2FoldChange computed"))
+
+    } else {
+
+      df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
+                                         c("gene not detected",
+                                           "log2FoldChange not computed"))
 
     }
 
