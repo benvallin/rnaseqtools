@@ -434,7 +434,7 @@ plot_lfc <- function(input,
 
   } else if(length(unique(df$lfc_cat)) == 2L) {
 
-    if(include_missing) {
+    if(!all(genes %in% df[[gene_id]])) {
 
       df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
                                          c("gene not detected",
@@ -451,7 +451,7 @@ plot_lfc <- function(input,
   } else {
 
     df$lfc_cat <- forcats::fct_relevel(df$lfc_cat,
-                                         unique(df$lfc_cat))
+                                       unique(df$lfc_cat))
 
   }
 
