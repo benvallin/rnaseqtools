@@ -95,7 +95,9 @@ summarise_gene_types <- function(input, gene_id, sample_id, gene_metadata) {
                    gene_metadata[grepl(pattern = "^MT-", x = gene_symbol), gene_id][[1]])
 
   rb_genes <- with(gene_metadata,
-                   gene_metadata[gene_type %in% c("rRNA", "rRNA_pseudogene"), gene_id][[1]])
+                   gene_metadata[grepl(pattern = "^RP[LS].*$", x = gene_symbol), gene_id][[1]])
+
+  rb_genes <- grep(pattern = "^RPS6K[AB].*$", x = rb_genes, value = TRUE, invert = TRUE)
 
   subcnts <- lapply(X = list(pc_genes, mt_genes, rb_genes),
                     FUN = function(x) {
