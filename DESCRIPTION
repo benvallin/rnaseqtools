@@ -1,5 +1,5 @@
 Package: rnaseqtools
-Title: RNA-seq analysis tools
+Title: Downstream RNA-Seq Data Analysis and Visualization
 Version: 0.0.0.9000
 Authors@R: 
     person(
@@ -9,7 +9,7 @@ Authors@R:
     role = c("aut", "cre"),
     comment = c(ORCID = "0009-0008-4907-4330")
     )
-Description: Helper functions to facilitate RNA-seq analysis.
+Description: A collection of tools for RNA-seq data analysis, including gene count manipulation and summarization, gene set testing and data visualization.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
