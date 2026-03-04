@@ -64,7 +64,12 @@ plot_msa <- function(input) {
 
   frequency <- do.call(what = cbind, args = frequency)
 
-  df$frequency <- asplit(x = frequency, MARGIN = 1)
+  frequency <- asplit(x = frequency, MARGIN = 1)
+
+  frequency <- lapply(X = frequency,
+                      FUN = function(x) as.double(x))
+
+  df$frequency <- frequency
 
   df <- tidyr::unnest(data = df,
                       cols = c("sequence", "position", "frequency"))

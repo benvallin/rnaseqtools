@@ -4,9 +4,9 @@
 \name{rnaseqtools-package}
 \alias{rnaseqtools}
 \alias{rnaseqtools-package}
-\title{rnaseqtools: RNA-seq analysis tools}
+\title{rnaseqtools: Downstream RNA-Seq Data Analysis and Visualization}
 \description{
-Helper functions to facilitate RNA-seq analysis.
+A collection of tools for RNA-seq data analysis, including gene count manipulation and summarization, gene set testing and data visualization.
 }
 \seealso{
 Useful links:
