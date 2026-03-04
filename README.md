@@ -23,9 +23,9 @@ A collection of tools for RNA-seq data analysis, including feature count manipul
 
 ## Installation
 
-You can install the development version of rnaseqtools from [GitHub](https://github.com/) with:
+You can install the development version of `rnaseqtools` from [GitHub](https://github.com/) with:
 
-``` r
+```r
 remotes::install_github("benvallin/rnaseqtools")
 ```
 
