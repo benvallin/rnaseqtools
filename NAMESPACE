@@ -44,6 +44,8 @@ export(tidy_DESeqResults)
 export(tidy_summaryZlmFit)
 export(transpose_cnt_df)
 importFrom(magrittr,"%>%")
-importFrom(rlang,"!!")
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  "!!",
+  ":=",
+  .data
+)

@@ -19,5 +19,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Benjamin Vallin \email{ben.vallin@gmail.com} (\href{https://orcid.org/0009-0008-4907-4330}{ORCID})
 
+Authors:
+\itemize{
+  \item Benjamin Vallin \email{ben.vallin@gmail.com} (\href{https://orcid.org/0009-0008-4907-4330}{ORCID})
+}
+
 }
 \keyword{internal}
